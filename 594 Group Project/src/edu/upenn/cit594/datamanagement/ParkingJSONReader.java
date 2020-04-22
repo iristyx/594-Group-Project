@@ -12,7 +12,6 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import edu.upenn.cit594.data.ParkingViolation;
-import edu.upenn.cit594.data.Population;
 
 
 /**
@@ -39,22 +38,13 @@ public class ParkingJSONReader implements ParkingReader {
 				JSONObject parkingLine = (JSONObject) iter.next();
 
 				// Extract relevant useful information
-				String timestampString = (String) parkingLine.get("date");
-				Date timestamp;
-				try {
-					timestamp = new SimpleDateFormat("YYYY-MM-DDThh:mm:ssZ").parse(timestampString);
-					String zipCode = (String) parkingLine.get("zip_code");
-					String fine = (String) parkingLine.get("fine");
-					String state = (String) parkingLine.get("state");
+				String zipCode = (String) parkingLine.get("zip_code");
+				long fine = (long) parkingLine.get("fine");
+				String state = (String) parkingLine.get("state");
 					
-					// Check for any missing data in the required fields - only create new ParkingViolation if all info are valid
-					if(!zipCode.isEmpty() && !fine.isEmpty() && !state.isEmpty()) {
-						parkingViolations.add(new ParkingViolation(timestamp, zipCode, Integer.parseInt(fine), state));
-					}
-
-				} catch (java.text.ParseException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				// Check for any missing data in the required fields - only create new ParkingViolation if all info are valid
+				if(!zipCode.isEmpty() && !state.isEmpty()) {
+					parkingViolations.add(new ParkingViolation(zipCode, fine, state));
 				}
 
 			}

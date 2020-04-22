@@ -1,15 +1,8 @@
 package edu.upenn.cit594.datamanagement;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Scanner;
-
-import edu.upenn.cit594.data.Coordinates;
-import edu.upenn.cit594.data.ParkingViolation;
-import edu.upenn.cit594.data.Population;
-import edu.upenn.cit594.data.Tweet;
 
 /**
  * Reads a csv file containing information on population by zip code
@@ -19,7 +12,7 @@ import edu.upenn.cit594.data.Tweet;
 public class PopulationReader {
 	
 	protected String filename;
-	protected List<Population> populations = new ArrayList<Population>();
+	protected HashMap<String,Integer> populations = new HashMap<String,Integer>();
 	
 	
 	public PopulationReader(String name) {
@@ -28,20 +21,20 @@ public class PopulationReader {
 
 	}
 	
-	public List<Population> getPopulations() {
-		List<Population> populations = new ArrayList<Population>();
+	public HashMap<String, Integer> getPopulations() {
+		HashMap<String, Integer> populations = new HashMap<String,Integer>();
 		Scanner in = null;
 		try {
 			in = new Scanner(new FileReader(filename));
 			while (in.hasNext()) {
 				String population = in.nextLine();
-				String[] populationDetails = population.split("\t");
+				String[] populationDetails = population.split(" ");
 				String zipCode = populationDetails[0];
 				String populationNum = populationDetails[1];
 
 				// Check for any missing data in the required fields - only create new Population if all info are valid
 				if(!zipCode.isEmpty() && !populationNum.isEmpty()) {
-					populations.add(new Population(zipCode, Integer.parseInt(populationNum)));
+					populations.put(zipCode, Integer.parseInt(populationNum));
 				}
 			}
 			in.close();

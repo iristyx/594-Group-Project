@@ -33,23 +33,16 @@ public class ParkingCSVReader implements ParkingReader {
 				String parkingLine = in.nextLine();
 				String[] parkingDetails = parkingLine.split(",");
 
-				// Read data
-				String timestampString = parkingDetails[0];
-				Date timestamp;
-				try {
-					timestamp = new SimpleDateFormat("YYYY-MM-DDThh:mm:ssZ").parse(timestampString);
+				if (parkingDetails.length == 7) {
+					// Read data
 					String zipCode = parkingDetails[6];
 					String fine = parkingDetails[1];
 					String state = parkingDetails[4];
 
 					// Check for any missing data in the required fields - only create new ParkingViolation if all info are valid
-					if(!zipCode.isEmpty() && !fine.isEmpty() && !state.isEmpty()) {
-						parkingViolations.add(new ParkingViolation(timestamp, zipCode, Integer.parseInt(fine), state));
+					if(!zipCode.isEmpty() && !state.isEmpty()) {
+						parkingViolations.add(new ParkingViolation(zipCode, Double.parseDouble(fine), state));
 					}
-
-				} catch (ParseException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
 				}
 			}
 			in.close();

@@ -1,5 +1,4 @@
 package edu.upenn.cit594.datamanagement;
-
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.text.ParseException;
@@ -8,9 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
-import edu.upenn.cit594.data.Parking;
 import edu.upenn.cit594.data.ParkingViolation;
-import edu.upenn.cit594.data.Population;
 import edu.upenn.cit594.data.Property;
 
 /**
@@ -67,7 +64,7 @@ public class PropertyReader {
 				// Check for any missing data in the required fields - only create new Property
 				// if all info are valid
 				if (!marketValue.isEmpty() && !livableArea.isEmpty() && !zipCode.isEmpty()) {
-					properties.add(new Property(Integer.parseInt(marketValue), Integer.parseInt(livableArea), zipCode));
+					properties.add(new Property(Double.parseDouble(marketValue), Double.parseDouble(livableArea), zipCode));
 				}
 
 			}
