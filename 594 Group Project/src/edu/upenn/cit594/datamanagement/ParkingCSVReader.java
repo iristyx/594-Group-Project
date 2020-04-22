@@ -1,28 +1,64 @@
 package edu.upenn.cit594.datamanagement;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
-import edu.upenn.cit594.data.Parking;
+import edu.upenn.cit594.data.ParkingViolation;
 
 /**
- * 
+ * Reads a csv file containing information on parking violations
  * 
  */
 
-public class ParkingCSVReader {
+public class ParkingCSVReader implements ParkingReader {
 
-	protected List<Parking> parkingViolations = new ArrayList<Parking>();	
+	protected String filename;
 
-	public ParkingCSVReader(String filename) { 	
-	
+	public ParkingCSVReader(String name) {
+
+		filename = name;
 	}
 
-	public List<Parking> getParkingViolations() {
-		return parkingViolations;
-	}
+	@Override
+	public List<ParkingViolation> getParkingViolations() {
+		List<ParkingViolation> parkingViolations = new ArrayList<ParkingViolation>();
+		Scanner in = null;
+		try {
+			in = new Scanner(new FileReader(filename));
+			while (in.hasNext()) {
+				String parkingLine = in.nextLine();
+				String[] parkingDetails = parkingLine.split(",");
 
+				// Read data
+				String timestampString = parkingDetails[0];
+				Date timestamp;
+				try {
+					timestamp = new SimpleDateFormat("YYYY-MM-DDThh:mm:ssZ").parse(timestampString);
+					String zipCode = parkingDetails[6];
+					String fine = parkingDetails[1];
+					String state = parkingDetails[4];
+
+					// Check for any missing data in the required fields - only create new ParkingViolation if all info are valid
+					if(!zipCode.isEmpty() && !fine.isEmpty() && !state.isEmpty()) {
+						parkingViolations.add(new ParkingViolation(timestamp, zipCode, Integer.parseInt(fine), state));
+					}
+
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			in.close();
+			return parkingViolations;
+		} catch (FileNotFoundException e) {
+			System.out.println("FileNotFoundException: Parking input file not found.");
+		} catch (SecurityException e1) {
+			System.out.println("SecurityException: Parking input file cannot be opened.");
+		}
+		return null;
+	}
 }
-
-
