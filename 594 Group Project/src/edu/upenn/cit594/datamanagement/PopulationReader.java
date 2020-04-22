@@ -21,6 +21,9 @@ public class PopulationReader {
 
 	}
 	
+	/*
+	 * Return HashMap of ZIP Codes and corresponding population numbers
+	 */
 	public HashMap<String, Integer> getPopulations() {
 		HashMap<String, Integer> populations = new HashMap<String,Integer>();
 		Scanner in = null;

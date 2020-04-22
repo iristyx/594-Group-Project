@@ -40,7 +40,7 @@ public class ParkingProcessor {
 	}
 	
 	/*
-	 * Return a list of unique PA ZIP codes, with available information on population size
+	 * Return a list of unique PA ZIP codes, only those with available information on population size
 	 */
 	public Set<String> getPAZipCodes(){
 		

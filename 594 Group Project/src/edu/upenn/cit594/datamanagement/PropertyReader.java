@@ -25,6 +25,9 @@ public class PropertyReader {
 
 	}
 
+	/*
+	 * Return a list of properties based on input csv containing property information
+	 */
 	public List<Property> getProperties() {
 		List<Property> properties = new ArrayList<Property>();
 		Scanner in = null;
