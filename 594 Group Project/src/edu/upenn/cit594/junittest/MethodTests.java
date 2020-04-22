@@ -1,4 +1,4 @@
-package cit.upenn.cit594.testing;
+package edu.upenn.cit594.junittest;
 
 import static org.junit.Assert.*;
 
