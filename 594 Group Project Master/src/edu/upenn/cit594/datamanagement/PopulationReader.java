@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.Scanner;
 import java.util.Set;
 
+import edu.upenn.cit594.logging.Logger;
+
 /**
  * Reads a csv file containing information on population by zip code
  * 
@@ -23,6 +25,9 @@ public class PopulationReader {
 	}
 	
 	public HashMap<String, Integer> getPopulations() {
+		
+		Logger l = Logger.getInstance();
+		
 		if (!populations.isEmpty()) {
 			return populations;
 		} else {
@@ -30,6 +35,11 @@ public class PopulationReader {
 			Scanner in;
 			try {
 				in = new Scanner(new FileReader(filename));
+				
+				// Log current time and name of file that is opened
+				l.log(System.currentTimeMillis());
+				l.log(filename);
+				
 				while (in.hasNext()) {
 					String population = in.nextLine();
 					String[] populationDetails = population.split(" ");

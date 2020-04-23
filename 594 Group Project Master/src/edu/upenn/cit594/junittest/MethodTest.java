@@ -3,19 +3,14 @@ package edu.upenn.cit594.junittest;
 import static org.junit.Assert.*;
 
 import java.util.List;
-import java.util.Set;
-
 import org.junit.Test;
 
 import edu.upenn.cit594.data.ParkingViolation;
 import edu.upenn.cit594.data.Property;
-import edu.upenn.cit594.datamanagement.ParkingCSVReader;
-import edu.upenn.cit594.datamanagement.ParkingJSONReader;
 import edu.upenn.cit594.datamanagement.ParkingReader;
 import edu.upenn.cit594.datamanagement.ParkingReaderCreator;
 import edu.upenn.cit594.datamanagement.PopulationReader;
 import edu.upenn.cit594.datamanagement.PropertyReader;
-import edu.upenn.cit594.processor.ParkingProcessor;
 import edu.upenn.cit594.processor.PopulationProcessor;
 
 public class MethodTest {

@@ -2,9 +2,6 @@ package edu.upenn.cit594.datamanagement;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -13,6 +10,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import edu.upenn.cit594.data.ParkingViolation;
+import edu.upenn.cit594.logging.Logger;
 
 
 /**
@@ -31,12 +29,20 @@ public class ParkingJSONReader implements ParkingReader {
 
 	@Override
 	public List<ParkingViolation> getParkingViolations() {
+		
+		Logger l = Logger.getInstance();
+		
 		if (!parkingViolations.isEmpty()) {
 			return parkingViolations;
 		} else {
 			JSONParser parser = new JSONParser();
 			try {
 				JSONArray parkingArray = (JSONArray) parser.parse(new FileReader(filename));
+				
+				// Log current time and name of file that is opened
+				l.log(System.currentTimeMillis());
+				l.log(filename);
+				
 				Iterator<?> iter = parkingArray.iterator();
 				while (iter.hasNext()) {
 					JSONObject parkingLine = (JSONObject) iter.next();

@@ -61,13 +61,17 @@ public class PropertyProcessor {
 	
 		double marketValue = 0;
 		int population = populations.get(zipCode);
-		for (Property property : properties) {
-			if (property.getZipCode().equals(zipCode)) {
-				marketValue += property.getMarketValue();
+		if (population == 0) {
+			return 0.0;
+		} else {
+			for (Property property : properties) {
+				if (property.getZipCode().equals(zipCode)) {
+					marketValue += property.getMarketValue();
+				}
 			}
+			double totalMarketValuePerCapita = marketValue / population;
+			return totalMarketValuePerCapita;
 		}
-		double totalMarketValuePerCapita = marketValue / population;
-		return totalMarketValuePerCapita;
 	}
 	
 	private Set<String> getValidZipCodes() {

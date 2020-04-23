@@ -1,26 +1,24 @@
 package edu.upenn.cit594;
 
-import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
-
-import edu.upenn.cit594.data.ParkingViolation;
 import edu.upenn.cit594.datamanagement.ParkingReader;
 import edu.upenn.cit594.datamanagement.ParkingReaderCreator;
 import edu.upenn.cit594.datamanagement.PopulationReader;
 import edu.upenn.cit594.datamanagement.PropertyReader;
+import edu.upenn.cit594.logging.Logger;
 import edu.upenn.cit594.processor.ParkingProcessor;
 import edu.upenn.cit594.processor.PopulationProcessor;
 import edu.upenn.cit594.processor.PropertyProcessor;
 import edu.upenn.cit594.ui.UserInterface;
 
 public class Main {
+	
+	public static String logFile;
 
 	public static void main(String[] args) {
-
+		
+		long startTime = System.currentTimeMillis();
+		
+		// Test only - should read in command lines args[] for actual run
 		String[] testArgs = new String[5];
 		testArgs[0] = "json";
 		testArgs[1] = "parking.json";
@@ -28,6 +26,13 @@ public class Main {
 		testArgs[3] = "population.txt";
 		testArgs[4] = "logfile.txt";
 
+		logFile = testArgs[4];
+		
+		Logger l= Logger.getInstance();
+		
+		// Log the start time and command line args
+		l.log(startTime + " " + testArgs[0] + " " + testArgs[1] + " " + testArgs[2] + " " + testArgs[3] + " " + testArgs[4]);
+		
 		if (testArgs.length != 5) {
 			throw new IllegalArgumentException("Invalid number of inputs provided.");
 		}
@@ -40,6 +45,7 @@ public class Main {
 
 		// try to implement this in Singleton later
 		ParkingReaderCreator parkingReaderCreator = new ParkingReaderCreator(testArgs[0], testArgs[1]); 
+		
 		ParkingReader parkingReader = parkingReaderCreator.createParkingReader();
 		PropertyReader propertyReader = new PropertyReader(testArgs[2]);
 		PopulationReader populationReader = new PopulationReader(testArgs[3]);

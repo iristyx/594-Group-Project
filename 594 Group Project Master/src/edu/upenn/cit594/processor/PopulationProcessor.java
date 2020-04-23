@@ -1,7 +1,5 @@
 package edu.upenn.cit594.processor;
 import java.util.HashMap;
-import java.util.Set;
-
 import edu.upenn.cit594.datamanagement.PopulationReader;
 
 /*

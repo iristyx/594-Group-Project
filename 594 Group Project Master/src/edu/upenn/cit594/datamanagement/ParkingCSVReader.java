@@ -1,14 +1,11 @@
 package edu.upenn.cit594.datamanagement;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 import edu.upenn.cit594.data.ParkingViolation;
+import edu.upenn.cit594.logging.Logger;
 
 /**
  * Reads a csv file containing information on parking violations
@@ -28,12 +25,20 @@ public class ParkingCSVReader implements ParkingReader {
 
 	@Override
 	public List<ParkingViolation> getParkingViolations() {
+		
+		Logger l = Logger.getInstance();
+		
 		if (!parkingViolations.isEmpty()) {
 			return parkingViolations;
 		} else {
 			Scanner in;
 			try {
 				in = new Scanner(new FileReader(filename));
+				
+				// Log current time and name of file that is opened
+				l.log(System.currentTimeMillis());
+				l.log(filename);
+				
 				while (in.hasNext()) {
 					String parkingLine = in.nextLine();
 					String[] parkingDetails = parkingLine.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
