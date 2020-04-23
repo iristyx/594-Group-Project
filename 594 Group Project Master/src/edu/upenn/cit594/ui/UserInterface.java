@@ -36,8 +36,9 @@ public class UserInterface {
 							"'3' to display average market value for residences in a specified ZIP Code\n" +
 							"'4' to display average total livable area for residences in a specified ZIP Code\n" +
 							"'5' to display total residential market value per capita for a specified ZIP Code\n" +
-							"'6' to display CUSTOM FUNCTION WHICH DOES COMPUTATION USING ALL 3 INPUT FILES\n\n" +
+							"'6' to display CUSTOM FUNCTION WHICH DOES COMPUTATION USING ALL 3 INPUT FILES\n" +
 							"'0' to exit.");
+		System.out.println("Your selection: ");
 		
 		while (true) {
 			
