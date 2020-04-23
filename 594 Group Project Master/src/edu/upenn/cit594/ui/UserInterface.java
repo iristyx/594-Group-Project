@@ -88,7 +88,8 @@ public class UserInterface {
 		HashMap<String,Double> totalParkingFinesPerCapita = parkingProcessor.getTotalFinesPerCapitaForAllPAZipCodes();
 		Map<String,Double> sortedTotalParkingFinesPerCapita = new TreeMap<String,Double>(totalParkingFinesPerCapita);
 		for (String zipCode : sortedTotalParkingFinesPerCapita.keySet()) {
-			System.out.println(zipCode + " " + sortedTotalParkingFinesPerCapita.get(zipCode));
+			double fines = sortedTotalParkingFinesPerCapita.get(zipCode);
+			System.out.println(zipCode + " " + truncateDecimal(fines,4));
 		}
 	}
 	
