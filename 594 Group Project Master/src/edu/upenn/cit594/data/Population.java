@@ -6,7 +6,6 @@ public class Population {
 	String population;
 	
 	public Population(String zipCode, String population) {
-		super();
 		this.zipCode = zipCode;
 		this.population = population;
 	}

@@ -1,91 +1,88 @@
 package edu.upenn.cit594.processor;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
-
-import edu.upenn.cit594.data.Population;
+import java.util.Set;
 import edu.upenn.cit594.data.Property;
+import edu.upenn.cit594.datamanagement.PopulationReader;
+import edu.upenn.cit594.datamanagement.PropertyReader;
 
 public class PropertyProcessor {
 
-	public PropertyProcessor() {
+	protected PropertyReader propertyReader;
+	protected PopulationReader populationReader;
+	protected List<Property> properties;
+	protected HashMap<String, Integer> populations;
+	protected Set<String> propertyZipCodes;
+	protected Set<String> populationZipCodes;
+	protected Set<String> validZipCodes = new HashSet<String>();
 
+	public PropertyProcessor(PropertyReader propertyReader, PopulationReader populationReader) {
+		this.propertyReader = propertyReader;
+		this.populationReader = populationReader;
+		properties = propertyReader.getProperties();
+		populations = populationReader.getPopulations();
+		propertyZipCodes = propertyReader.getZipCodes();
+		populationZipCodes = populationReader.getZipCodes();
+		validZipCodes = getValidZipCodes();
 	}
 
-	
-	public double AverageMarketValuePerZipCode(String zipCode, List<Property> properties) {
-		
-		double marketValue = 0; 
-		double propertyCount = 0; 
-		double averageMarketValuePerZipCode = 0; 
-		
-		for (Property p : properties) {
-			if (p.getZipCode().contentEquals(zipCode)) {
-				propertyCount = propertyCount + 1; 
-				double doubleValue = p.getMarketValue();
-				marketValue = marketValue + doubleValue; 
-			}
-		}
-		
-		averageMarketValuePerZipCode = marketValue / propertyCount; 
-		
-		System.out.println((int) averageMarketValuePerZipCode);
-		
-		return averageMarketValuePerZipCode;
-		
+	/*
+	 * Strategy design to return average market value of residences by ZIP Code
+	 */
+	public double getAverageMarketValue(String zipCode) {
+		return getAverage(zipCode, new AveragePropertyValueCalculator());
 	}
-	
-	
-	public double averageResidentialTotalLivableArea(String zipCode, List<Property> properties) {
-		
-		double livableArea = 0; 
-		double propertyCount = 0; 
-		double averageLivableAreaPerZipCode = 0; 
-		
-		for (Property p : properties) {
-			if (p.getZipCode().contentEquals(zipCode)) {
-				propertyCount = propertyCount + 1; 
-				double doubleValue = p.getLivableArea();
-				livableArea = livableArea + doubleValue; 
-			}
-		}
-		
-		averageLivableAreaPerZipCode = livableArea / propertyCount; 
-		
-		System.out.println((int) averageLivableAreaPerZipCode);
-		
-		return averageLivableAreaPerZipCode;
-		
+
+	/*
+	 * Strategy design to return average livable area of residences by ZIP Code
+	 */
+	public double getAverageLivableArea(String zipCode) {
+		return getAverage(zipCode, new AveragePropertyAreaCalculator());
 	}
-	
-	
-	public double totalMarketValuePerCapita(String zipCode, List<Property> properties, HashMap<String, Integer> populations) {
-		
-		double marketValue = 0; 
-		int population = 0; 
-		double totalMarketValuePerCapita = 0; 
-		
-		for (Property p : properties) {
-			if (p.getZipCode().contentEquals(zipCode)) {
-				double doubleValue = p.getMarketValue();
-				marketValue = marketValue + doubleValue; 
+
+	/*
+	 * Strategy design to return average value of residences by ZIP Code
+	 */
+	private double getAverage(String zipCode, AveragePropertyCalculator calculator) {
+
+		// If ZIP Code is not in input file
+		if (!validZipCodes.contains(zipCode)) {
+			return 0.0;
+		}
+
+		double average = calculator.getAverage(zipCode, properties);
+		return average;
+	}
+
+	public double getTotalMarketValuePerCapita(String zipCode) {
+		// If ZIP Code is not in input file
+		if (!validZipCodes.contains(zipCode)) {
+			return 0.0;
+		}
+
+		double marketValue = 0;
+		int population = populations.get(zipCode);
+		for (Property property : properties) {
+			if (property.getZipCode().equals(zipCode)) {
+				marketValue += property.getMarketValue();
 			}
 		}
-		
-		for (String s : populations.keySet()) {
-		
-			if (s.contentEquals(zipCode)) {
-				population = populations.get(s);	
-			}
-		}
-		
-		totalMarketValuePerCapita = marketValue / population; 
-		
-		System.out.println((int) totalMarketValuePerCapita);
-		
+		double totalMarketValuePerCapita = marketValue / population;
 		return totalMarketValuePerCapita;
+	}
+	
+	private Set<String> getValidZipCodes() {
 		
+		if (validZipCodes.isEmpty()) {
+			for (String zipCode : propertyZipCodes) {
+				if (populationZipCodes.contains(zipCode)) {
+					validZipCodes.add(zipCode);
+				}
+			}
+		}
+		return validZipCodes;
 	}
 	
 }

@@ -1,64 +1,70 @@
 package edu.upenn.cit594.processor;
-
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
 import edu.upenn.cit594.data.ParkingViolation;
 import edu.upenn.cit594.datamanagement.ParkingReader;
 import edu.upenn.cit594.datamanagement.PopulationReader;
 
 public class ParkingProcessor {
-	
+
 	protected PopulationReader populationReader;
 	protected ParkingReader parkingReader;
-	protected HashMap<String,Integer> populations;
+	protected HashMap<String, Integer> populations;
 	protected List<ParkingViolation> parkingViolations;
-	
+	protected Set<String> PAZipCodes = new HashSet<String>();
+
 	public ParkingProcessor(ParkingReader parkingReader, PopulationReader populationReader) {
 		this.populationReader = populationReader;
 		this.parkingReader = parkingReader;
 		this.populations = populationReader.getPopulations();
 		this.parkingViolations = parkingReader.getParkingViolations();
-		
+
 	}
 
 	/*
-	 * Return value of total fines divided by population given a ZIP Code
-	 * Returns 0 if population is zero
+	 * Return value of total fines divided by population given a ZIP Code Returns 0
+	 * if population is zero
 	 */
-	public Double getFinesPerCapitaByZipCode(String zipCode) {
-		int population = populations.get(zipCode);
-		if (population == 0) {
-			return 0.0;
+	public HashMap<String, Double> getTotalFinesPerCapitaForAllPAZipCodes() {
+		HashMap<String, Double> finesZipCodeMap = new HashMap<String, Double>();
+		Set<String> zipCodes = getPAZipCodes();
+		for (String zipCode : zipCodes) {
+			int population = populations.get(zipCode);
+			double totalFines = getTotalFinesByZipCode(zipCode);
+			
+			// Ignore zipCode if total aggregates fines is 0 or if population is 0
+			if (population != 0 && totalFines != 0) {
+				double totalFinesPerCapita = totalFines / population;
+				finesZipCodeMap.put(zipCode, totalFinesPerCapita);
+			}
 		}
-		double fines = getTotalFinesByZipCode(zipCode);
-		double finesPerCapita = fines / population;
-		return finesPerCapita;
-		
+		return finesZipCodeMap;
+
 	}
-	
+
 	/*
-	 * Return a list of unique PA ZIP codes, with available information on population size
+	 * Return a list of unique PA ZIP codes, with available information on
+	 * population size
 	 */
-	public Set<String> getPAZipCodes(){
-		
-		Set<String> PAZipCodes = new HashSet<String>();
-		for (ParkingViolation parking : parkingViolations) {
-			if (parking.getState().toLowerCase().equals("pa")) {
-				String zipCode = parking.getZipCode();
-				
-				// Check if information on population is available
-				if (populations.containsKey(zipCode)){
-					PAZipCodes.add(zipCode);
+	private Set<String> getPAZipCodes() {
+
+		// If PAZipCodes is not yet generated
+		if (PAZipCodes.isEmpty()) {
+			for (ParkingViolation parking : parkingViolations) {
+				if (parking.getState().toLowerCase().equals("pa")) {
+					String zipCode = parking.getZipCode();
+					// Check if information on population is available
+					if (populations.containsKey(zipCode)) {
+						PAZipCodes.add(zipCode);
+					}
 				}
 			}
-			
 		}
 		return PAZipCodes;
 	}
-	
+
 	/*
 	 * Private helper method: return sum of total fines in a given ZIP Code
 	 */
@@ -72,7 +78,4 @@ public class ParkingProcessor {
 		return totalFines;
 	}
 
-	
-	
-	
 }

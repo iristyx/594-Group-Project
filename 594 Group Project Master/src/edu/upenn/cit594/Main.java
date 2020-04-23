@@ -1,58 +1,73 @@
 package edu.upenn.cit594;
-import java.util.ArrayList;
+
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.TreeMap;
 
 import edu.upenn.cit594.data.ParkingViolation;
-import edu.upenn.cit594.data.Population;
-import edu.upenn.cit594.data.Property;
-import edu.upenn.cit594.datamanagement.ParkingCSVReader;
-import edu.upenn.cit594.datamanagement.ParkingJSONReader;
-import edu.upenn.cit594.datamanagement.PopulationReader;
+import edu.upenn.cit594.datamanagement.ParkingReader;
+import edu.upenn.cit594.datamanagement.ParkingReaderCreator;
 import edu.upenn.cit594.datamanagement.PopulationReader;
 import edu.upenn.cit594.datamanagement.PropertyReader;
-import edu.upenn.cit594.datamanagement.PropertyReader;
+import edu.upenn.cit594.processor.ParkingProcessor;
+import edu.upenn.cit594.processor.PopulationProcessor;
+import edu.upenn.cit594.processor.PropertyProcessor;
 import edu.upenn.cit594.ui.UserInterface;
-
 
 public class Main {
 
 	public static void main(String[] args) {
 
+		String[] testArgs = new String[5];
+		testArgs[0] = "json";
+		testArgs[1] = "parking.json";
+		testArgs[2] = "properties.csv";
+		testArgs[3] = "population.txt";
+		testArgs[4] = "logfile.txt";
 
-		// Step 1a. Parking CSV Reader
-		String textfile = "parking2.csv"; 
-		ParkingCSVReader parkingCSVReader = new ParkingCSVReader(textfile);
-		List<ParkingViolation> parkingViolations1 = parkingCSVReader.getParkingViolations(); 
+		if (testArgs.length != 5) {
+			throw new IllegalArgumentException("Invalid number of inputs provided.");
+		}
 
+		if (!testArgs[0].equalsIgnoreCase("csv") && !testArgs[0].equalsIgnoreCase("json")) {
+			throw new IllegalArgumentException("Invalid format for input parking file.");
+		}
+
+		// Create reader objects
+
+		// try to implement this in Singleton later
+		ParkingReaderCreator parkingReaderCreator = new ParkingReaderCreator(testArgs[0], testArgs[1]); 
+		ParkingReader parkingReader = parkingReaderCreator.createParkingReader();
+		PropertyReader propertyReader = new PropertyReader(testArgs[2]);
+		PopulationReader populationReader = new PopulationReader(testArgs[3]);
 		
-		// Step 1b. Parking JSON Reader 
-		String jsonfile = "parking2.json"; 
-		ParkingJSONReader parkingJSONReader = new ParkingJSONReader(jsonfile);
-		List<ParkingViolation> parkingViolations2 = parkingJSONReader.getParkingViolations();
-
-
-		// Step 2. Create Property CSV Reader
-		// String csvfile = args[2];
-		String csvfile = "propertiesv2.csv";
-		PropertyReader propertyReader = new PropertyReader(csvfile);
-		List<Property> properties = propertyReader.getProperties();
-
-
-		// Step 3. Create Population TXT Reader
-		// String txtfile = args[3];
-		String txtfile = "population2.txt";
-		PopulationReader populationReader = new PopulationReader (txtfile);
-		HashMap<String, Integer> populations = populationReader.getPopulations();
-
-
-		UserInterface ui = new UserInterface(); 
-
-
-
+		// Create processor objects
+		ParkingProcessor parkingProcessor = new ParkingProcessor(parkingReader, populationReader);
+		PopulationProcessor populationProcessor = new PopulationProcessor(populationReader);
+		PropertyProcessor propertyProcessor = new PropertyProcessor(propertyReader, populationReader);
+		
+		Set<String> zipCodes = propertyReader.getZipCodes();
+		for (String zip : zipCodes) {
+			double averageLivableArea = propertyProcessor.getAverageLivableArea(zip);
+			double averageMarketValue = propertyProcessor.getAverageMarketValue(zip);
+			double totalMarketValuePerCapita = propertyProcessor.getTotalMarketValuePerCapita(zip);
+			System.out.println("ZIP CODE: " + zip);
+			System.out.println("Average market value: " + averageMarketValue);
+			System.out.println("Average livable area: " + averageLivableArea);
+			System.out.println("Total market value per capita: "+ totalMarketValuePerCapita +"\n");
+		
+			
+		}
+		
+//		// Create user interface
+//		System.out.println("Step 8...");
+//		UserInterface ui = new UserInterface(parkingProcessor,populationProcessor,propertyProcessor); 
+//
+//		System.out.println("Starting UI...");
+//		ui.start();
 	}
 
 }

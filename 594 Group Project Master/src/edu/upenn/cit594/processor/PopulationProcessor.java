@@ -21,6 +21,7 @@ public class PopulationProcessor {
 	 * Returns the total sum of population for all ZIP Codes
 	 */
 	public Integer getTotalPopulation() {
+
 		Integer sum = 0;
 		for (String zipCode : populations.keySet()) {
 			sum += populations.get(zipCode);
@@ -28,7 +29,4 @@ public class PopulationProcessor {
 		return sum;
 	}
 	
-	public Set<String> getZipCodes(){
-		return populations.keySet();
-	}
 }

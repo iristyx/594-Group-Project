@@ -3,6 +3,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.HashMap;
 import java.util.Scanner;
+import java.util.Set;
 
 /**
  * Reads a csv file containing information on population by zip code
@@ -22,29 +23,35 @@ public class PopulationReader {
 	}
 	
 	public HashMap<String, Integer> getPopulations() {
-		HashMap<String, Integer> populations = new HashMap<String,Integer>();
-		Scanner in = null;
-		try {
-			in = new Scanner(new FileReader(filename));
-			while (in.hasNext()) {
-				String population = in.nextLine();
-				String[] populationDetails = population.split(" ");
-				String zipCode = populationDetails[0];
-				String populationNum = populationDetails[1];
-
-				// Check for any missing data in the required fields - only create new Population if all info are valid
-				if(!zipCode.isEmpty() && !populationNum.isEmpty()) {
-					populations.put(zipCode, Integer.parseInt(populationNum));
-				}
-			}
-			in.close();
+		if (!populations.isEmpty()) {
 			return populations;
-		} catch (FileNotFoundException e) {
-			System.out.println("FileNotFoundException: Population input file not found.");
-		} catch (SecurityException e1) {
-			System.out.println("SecurityException: Population input file cannot be opened.");
+		} else {
+			
+			Scanner in;
+			try {
+				in = new Scanner(new FileReader(filename));
+				while (in.hasNext()) {
+					String population = in.nextLine();
+					String[] populationDetails = population.split(" ");
+					if(populationDetails.length == 2) {
+						String zipCode = populationDetails[0];
+						String populationNum = populationDetails[1];
+						populations.put(zipCode, Integer.parseInt(populationNum));
+					}
+				}
+				in.close();
+				return populations;
+			} catch (FileNotFoundException e) {
+				System.out.println("FileNotFoundException: Population input file not found.");
+			} catch (SecurityException e1) {
+				System.out.println("SecurityException: Population input file cannot be opened.");
+			}
+			return null;
 		}
-		return null;
+	}
+	
+	public Set<String> getZipCodes(){
+		return populations.keySet();
 	}
 	
 }
