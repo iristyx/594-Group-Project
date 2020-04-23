@@ -68,7 +68,7 @@ public class UserInterface {
 			}
 			else if (choice == 6) {
 				System.out.println("It's not ready, but stay tuned for our custom function!");
-				//do some custom function
+				doAverageParkingFinesAndHighestMarketValuePerZipCode(); 
 			}
 			else {
 				throw new IllegalArgumentException("Invalid input! Input must be an integer 1-6, or 0 to exit program.");
@@ -122,6 +122,25 @@ public class UserInterface {
 			System.out.println("0");
 		}
 	}
+
+	
+	protected void doAverageParkingFinesAndHighestMarketValuePerZipCode() {
+
+		String zipCode = promptUserForZipCode();
+		if (!zipCode.equals("0")) {
+			
+			double highestMarketValue = propertyProcessor.getHighestMarketValue(zipCode);
+			double averageParkingFine = parkingProcessor.getAverageParkingFinePerZipCode(zipCode);
+			
+			System.out.println(truncateDecimal(highestMarketValue, 0));
+			System.out.println(truncateDecimal(averageParkingFine, 0));
+			
+			
+		} else {
+			System.out.println("0");
+		}
+	}
+	
 	
 	protected String promptUserForZipCode() {
 		Logger l = Logger.getInstance();

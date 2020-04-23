@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import edu.upenn.cit594.data.ParkingViolation;
+import edu.upenn.cit594.data.Property;
 import edu.upenn.cit594.datamanagement.ParkingReader;
 import edu.upenn.cit594.datamanagement.PopulationReader;
 
@@ -33,7 +34,7 @@ public class ParkingProcessor {
 		for (String zipCode : zipCodes) {
 			int population = populations.get(zipCode);
 			double totalFines = getTotalFinesByZipCode(zipCode);
-			
+
 			// Ignore zipCode if total aggregates fines is 0 or if population is 0
 			if (population != 0 && totalFines != 0) {
 				double totalFinesPerCapita = totalFines / population;
@@ -43,6 +44,35 @@ public class ParkingProcessor {
 		return finesZipCodeMap;
 
 	}
+
+
+	/*
+	 * Return value of total fines divided by population given a ZIP Code Returns 0
+	 * if population is zero
+	 */
+	public double getAverageParkingFinePerZipCode(String zipCode) {
+
+		double parkingViolationTotal = 0.0;
+		double averageParkingFinePerZipCode = 0.0; 
+		double population = 0.0;
+		
+		population = populations.get(zipCode);
+		
+		if (population == 0.0) {
+			return 0.0; 
+		}
+		
+		for (ParkingViolation parkingViolation : parkingViolations) {
+			if (parkingViolation.getZipCode().equals(zipCode)) {
+				parkingViolationTotal = parkingViolationTotal + parkingViolation.getFine();
+			}
+		}
+
+		averageParkingFinePerZipCode = parkingViolationTotal / population; 
+		return averageParkingFinePerZipCode; 
+		
+	}
+
 
 	/*
 	 * Return a list of unique PA ZIP codes, with available information on
