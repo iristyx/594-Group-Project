@@ -39,9 +39,9 @@ public class PropertyProcessor {
 	 * Strategy design to return average livable area of residences by ZIP Code
 	 */
 	public double getAverageLivableArea(String zipCode) {
-		
+
 		// If ZIP Code is invalid
-		if(!validZipCodes.contains(zipCode)) {
+		if (!validZipCodes.contains(zipCode)) {
 			return 0.0;
 		} else {
 			return getAverage(zipCode, new AveragePropertyLivableAreaCalculator());
@@ -58,24 +58,28 @@ public class PropertyProcessor {
 	}
 
 	public double getTotalMarketValuePerCapita(String zipCode) {
-	
-		double marketValue = 0;
-		int population = populations.get(zipCode);
-		if (population == 0) {
+		// If ZIP Code is invalid
+		if (!validZipCodes.contains(zipCode)) {
 			return 0.0;
 		} else {
-			for (Property property : properties) {
-				if (property.getZipCode().equals(zipCode)) {
-					marketValue += property.getMarketValue();
+			double marketValue = 0;
+			int population = populations.get(zipCode);
+			if (population == 0) {
+				return 0.0;
+			} else {
+				for (Property property : properties) {
+					if (property.getZipCode().equals(zipCode)) {
+						marketValue += property.getMarketValue();
+					}
 				}
+				double totalMarketValuePerCapita = marketValue / population;
+				return totalMarketValuePerCapita;
 			}
-			double totalMarketValuePerCapita = marketValue / population;
-			return totalMarketValuePerCapita;
 		}
 	}
-	
+
 	private Set<String> getValidZipCodes() {
-		
+
 		if (validZipCodes.isEmpty()) {
 			for (String zipCode : propertyZipCodes) {
 				if (populationZipCodes.contains(zipCode)) {
@@ -85,5 +89,5 @@ public class PropertyProcessor {
 		}
 		return validZipCodes;
 	}
-	
+
 }
