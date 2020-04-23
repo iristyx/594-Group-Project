@@ -72,6 +72,8 @@ public class UserInterface {
 			else {
 				throw new IllegalArgumentException("Invalid input! Input must be an integer 1-6, or 0 to exit program.");
 			}
+			
+			System.out.println("Please select another option from the list above [1-6], or 0 to exit: ");
 		}
 		in.close();
 	}
