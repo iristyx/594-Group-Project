@@ -94,20 +94,32 @@ public class UserInterface {
 	
 	protected void doAverageMarketValueForResidences() {
 		String zipCode = promptUserForZipCode();
-		double result = propertyProcessor.getAverageMarketValue(zipCode);
-		System.out.println(truncateDecimal(result,0));
+		if (!zipCode.equals(null)) {
+			double result = propertyProcessor.getAverageMarketValue(zipCode);
+			System.out.println(truncateDecimal(result,0));
+		} else {
+			System.out.println("0");
+		}
 	}
 	
 	protected void doAverageLivableAreaForResidences() {
 		String zipCode = promptUserForZipCode();
-		double result = propertyProcessor.getAverageLivableArea(zipCode);
-		System.out.println(truncateDecimal(result,0));
+		if (!zipCode.equals(null)) {
+			double result = propertyProcessor.getAverageLivableArea(zipCode);
+			System.out.println(truncateDecimal(result,0));
+		} else {
+			System.out.println("0");
+		}
 	}
 	
 	protected void doTotalResidentialMarketValuePerCapita() {
 		String zipCode = promptUserForZipCode();
-		double result = propertyProcessor.getTotalMarketValuePerCapita(zipCode);
-		System.out.println(truncateDecimal(result,0));
+		if (!zipCode.equals(null)) {
+			double result = propertyProcessor.getTotalMarketValuePerCapita(zipCode);
+			System.out.println(truncateDecimal(result,0));
+		} else {
+			System.out.println("0");
+		}
 	}
 	
 	protected String promptUserForZipCode() {
@@ -115,7 +127,7 @@ public class UserInterface {
 		System.out.print("Please input a 5-digit ZIP Code: ");
 		String zipCode = in.next();
 		if (zipCode.length() != 5) {
-			throw new IllegalArgumentException("Invalid ZIP Code. Input must be 5-digit.");
+			return null;
 		}
 		
 		// Log current time and user's ZIP Code input

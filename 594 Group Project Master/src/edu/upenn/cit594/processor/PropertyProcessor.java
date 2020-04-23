@@ -40,21 +40,20 @@ public class PropertyProcessor {
 	 */
 	public double getAverageLivableArea(String zipCode) {
 
-		// If ZIP Code is invalid
-		if (!validZipCodes.contains(zipCode)) {
-			return 0.0;
-		} else {
-			return getAverage(zipCode, new AveragePropertyLivableAreaCalculator());
-		}
+		return getAverage(zipCode, new AveragePropertyLivableAreaCalculator());
 	}
 
 	/*
 	 * Strategy design to return average value of residences by ZIP Code
 	 */
 	private double getAverage(String zipCode, AveragePropertyCalculator calculator) {
-
-		double average = calculator.getAverage(zipCode, properties);
-		return average;
+		// If ZIP Code is invalid
+		if (!validZipCodes.contains(zipCode)) {
+			return 0.0;
+		} else {
+			double average = calculator.getAverage(zipCode, properties);
+			return average;
+		}
 	}
 
 	public double getTotalMarketValuePerCapita(String zipCode) {

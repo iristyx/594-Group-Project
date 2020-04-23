@@ -1,15 +1,9 @@
-1587664564604 json parking.json properties.csv population.txt logfile.txt
-1587664564825
+1587666727726 json parking.json properties.csv population.txt logfile.txt
+1587666727771
 properties.csv
-1587664769980
+1587666929109
 population.txt
-1587664770288
+1587666929336
 parking.json
-1587664932825
-User Selection:3
-1587664937956
-19106
-1587664947273
+1587666934574
 User Selection:5
-1587664951261
-19108
