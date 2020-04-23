@@ -28,10 +28,10 @@ public class Main {
 
 		logFile = testArgs[4];
 		
-		Logger l= Logger.getInstance();
+		Logger logger = Logger.getInstance();
 		
 		// Log the start time and command line args
-		l.log(startTime + " " + testArgs[0] + " " + testArgs[1] + " " + testArgs[2] + " " + testArgs[3] + " " + testArgs[4]);
+		logger.log(startTime + " " + testArgs[0] + " " + testArgs[1] + " " + testArgs[2] + " " + testArgs[3] + " " + testArgs[4]);
 		
 		if (testArgs.length != 5) {
 			throw new IllegalArgumentException("Invalid number of inputs provided.");

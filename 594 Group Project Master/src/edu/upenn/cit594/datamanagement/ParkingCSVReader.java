@@ -26,7 +26,7 @@ public class ParkingCSVReader implements ParkingReader {
 	@Override
 	public List<ParkingViolation> getParkingViolations() {
 		
-		Logger l = Logger.getInstance();
+		Logger logger = Logger.getInstance();
 		
 		if (!parkingViolations.isEmpty()) {
 			return parkingViolations;
@@ -36,8 +36,8 @@ public class ParkingCSVReader implements ParkingReader {
 				in = new Scanner(new FileReader(filename));
 				
 				// Log current time and name of file that is opened
-				l.log(System.currentTimeMillis());
-				l.log(filename);
+				logger.log(System.currentTimeMillis());
+				logger.log(filename);
 				
 				while (in.hasNext()) {
 					String parkingLine = in.nextLine();
@@ -45,9 +45,9 @@ public class ParkingCSVReader implements ParkingReader {
 	
 					if (parkingDetails.length == 7) {
 						// Read data
-						String zipCode = parkingDetails[6];
 						String fine = parkingDetails[1];
 						String state = parkingDetails[4];
+						String zipCode = parkingDetails[6];
 	
 						// Check for any missing data in the required fields - only create new ParkingViolation if all info are valid
 						if(!zipCode.isEmpty() && !state.isEmpty()) {
