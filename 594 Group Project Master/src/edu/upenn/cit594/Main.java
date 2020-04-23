@@ -42,10 +42,7 @@ public class Main {
 		}
 
 		// Create reader objects
-
-		// try to implement this in Singleton later
 		ParkingReaderCreator parkingReaderCreator = new ParkingReaderCreator(testArgs[0], testArgs[1]); 
-		
 		ParkingReader parkingReader = parkingReaderCreator.createParkingReader();
 		PropertyReader propertyReader = new PropertyReader(testArgs[2]);
 		PopulationReader populationReader = new PopulationReader(testArgs[3]);

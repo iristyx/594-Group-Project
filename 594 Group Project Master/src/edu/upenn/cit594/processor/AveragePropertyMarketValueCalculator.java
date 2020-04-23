@@ -17,7 +17,7 @@ public class AveragePropertyMarketValueCalculator implements AveragePropertyCalc
 		for (Property property : properties) {
 			if (property.getZipCode().equals(zipCode)) {
 				propertyCount += 1; 
-				marketValue = property.getMarketValue(); 
+				marketValue += property.getMarketValue(); 
 			}
 		}
 		

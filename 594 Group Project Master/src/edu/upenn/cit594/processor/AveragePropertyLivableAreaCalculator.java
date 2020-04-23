@@ -17,7 +17,7 @@ public class AveragePropertyLivableAreaCalculator implements AveragePropertyCalc
 		for (Property property : properties) {
 			if (property.getZipCode().equals(zipCode)) {
 				propertyCount += 1; 
-				livableArea = property.getLivableArea(); 
+				livableArea += property.getLivableArea(); 
 			}
 		}
 		
