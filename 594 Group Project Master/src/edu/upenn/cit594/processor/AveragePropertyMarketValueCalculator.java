@@ -4,7 +4,7 @@ import java.util.List;
 
 import edu.upenn.cit594.data.Property;
 
-public class AveragePropertyValueCalculator implements AveragePropertyCalculator {
+public class AveragePropertyMarketValueCalculator implements AveragePropertyCalculator {
 
 	/*
 	 * Return total market value of all residences over the number of residences in a given ZIP code

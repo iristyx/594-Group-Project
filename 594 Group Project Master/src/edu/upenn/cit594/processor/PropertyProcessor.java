@@ -32,14 +32,20 @@ public class PropertyProcessor {
 	 * Strategy design to return average market value of residences by ZIP Code
 	 */
 	public double getAverageMarketValue(String zipCode) {
-		return getAverage(zipCode, new AveragePropertyValueCalculator());
+		return getAverage(zipCode, new AveragePropertyMarketValueCalculator());
 	}
 
 	/*
 	 * Strategy design to return average livable area of residences by ZIP Code
 	 */
 	public double getAverageLivableArea(String zipCode) {
-		return getAverage(zipCode, new AveragePropertyAreaCalculator());
+		
+		// If ZIP Code is invalid
+		if(!validZipCodes.contains(zipCode)) {
+			return 0.0;
+		} else {
+			return getAverage(zipCode, new AveragePropertyLivableAreaCalculator());
+		}
 	}
 
 	/*
@@ -47,21 +53,12 @@ public class PropertyProcessor {
 	 */
 	private double getAverage(String zipCode, AveragePropertyCalculator calculator) {
 
-		// If ZIP Code is not in input file
-		if (!validZipCodes.contains(zipCode)) {
-			return 0.0;
-		}
-
 		double average = calculator.getAverage(zipCode, properties);
 		return average;
 	}
 
 	public double getTotalMarketValuePerCapita(String zipCode) {
-		// If ZIP Code is not in input file
-		if (!validZipCodes.contains(zipCode)) {
-			return 0.0;
-		}
-
+	
 		double marketValue = 0;
 		int population = populations.get(zipCode);
 		for (Property property : properties) {

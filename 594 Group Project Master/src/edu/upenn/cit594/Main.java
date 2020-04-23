@@ -49,25 +49,9 @@ public class Main {
 		PopulationProcessor populationProcessor = new PopulationProcessor(populationReader);
 		PropertyProcessor propertyProcessor = new PropertyProcessor(propertyReader, populationReader);
 		
-		Set<String> zipCodes = propertyReader.getZipCodes();
-		for (String zip : zipCodes) {
-			double averageLivableArea = propertyProcessor.getAverageLivableArea(zip);
-			double averageMarketValue = propertyProcessor.getAverageMarketValue(zip);
-			double totalMarketValuePerCapita = propertyProcessor.getTotalMarketValuePerCapita(zip);
-			System.out.println("ZIP CODE: " + zip);
-			System.out.println("Average market value: " + averageMarketValue);
-			System.out.println("Average livable area: " + averageLivableArea);
-			System.out.println("Total market value per capita: "+ totalMarketValuePerCapita +"\n");
-		
-			
-		}
-		
-//		// Create user interface
-//		System.out.println("Step 8...");
-//		UserInterface ui = new UserInterface(parkingProcessor,populationProcessor,propertyProcessor); 
-//
-//		System.out.println("Starting UI...");
-//		ui.start();
+		// Create user interface
+		UserInterface ui = new UserInterface(parkingProcessor,populationProcessor,propertyProcessor); 
+		ui.start();
 	}
 
 }
