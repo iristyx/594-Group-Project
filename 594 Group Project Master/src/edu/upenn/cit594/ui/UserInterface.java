@@ -19,7 +19,7 @@ public class UserInterface {
 	protected ParkingProcessor parkingProcessor;
 	protected Scanner in;
 
-	protected Map<String, Result> Results = new HashMap<>();
+	protected Map<String, Result> Results = new HashMap<String, Result>();
 
 	public UserInterface(ParkingProcessor parkingProcessor, PopulationProcessor populationProcessor, PropertyProcessor propertyProcessor) {
 		this.propertyProcessor = propertyProcessor;
@@ -67,7 +67,7 @@ public class UserInterface {
 				// Memoization 
 				if (Results.containsKey("2")) {
 					System.out.println(Results.get("2"));
-					
+
 					for (String zipCode : Results.get("2").getSortedTotalParkingFinesPerCapita().keySet()) {
 						double fines = Results.get("2").getSortedTotalParkingFinesPerCapita().get(zipCode);
 						System.out.println(zipCode + " " + truncateDecimal(fines,4));
@@ -100,47 +100,49 @@ public class UserInterface {
 
 	protected void doPopulationForAllZipCodes() {
 		int sum = populationProcessor.getTotalPopulation();
-		
+
 		// Put into memoization hashmap 
 		Result result = new Result (sum, null, null, null, null, null, null); 
 		Results.put("1", result);
-		
+
 		System.out.println(sum);
 	}
 
 	protected void doTotalParkingFinesPerCapita() {
 		HashMap<String,Double> totalParkingFinesPerCapita = parkingProcessor.getTotalFinesPerCapitaForAllPAZipCodes();
 		Map<String,Double> sortedTotalParkingFinesPerCapita = new TreeMap<String,Double>(totalParkingFinesPerCapita);
-		
+
 		// Put into memoization hashmap 
 		Result result = new Result (0, sortedTotalParkingFinesPerCapita, null, null, null, null, null); 
 		Results.put("2", result);
-		
+
 		for (String zipCode : sortedTotalParkingFinesPerCapita.keySet()) {
 			double fines = sortedTotalParkingFinesPerCapita.get(zipCode);
 			System.out.println(zipCode + " " + truncateDecimal(fines,4));
 		}
-		
+
 	}
 
 	protected void doAverageMarketValueForResidences() {
 		String zipCode = promptUserForZipCode();
-		
+
 		// Memoization 
-		if (Results.get("3").getAverageMarketValue().containsKey(zipCode)) {
-			double result = Results.get("3").getAverageMarketValue().get(zipCode); 
-			System.out.println(truncateDecimal(result,0));
+		if (Results.containsKey("3")) {
+			if (Results.get("3").getAverageMarketValue().containsKey(zipCode)) {
+				double result = Results.get("3").getAverageMarketValue().get(zipCode); 
+				System.out.println(truncateDecimal(result,0));
+			}
 		}
-		
+
 		if (!zipCode.equals("0")) {
 			double result = propertyProcessor.getAverageMarketValue(zipCode);
-		
-		// Put into memoization hashmap 
-			Map<String,Double> averageMarketValue = null; 
+
+			// Put into memoization hashmap 
+			Map<String,Double> averageMarketValue = new HashMap<String,Double>(); 
 			averageMarketValue.put(zipCode, result); 
 			Result resultObject = new Result (0, null, averageMarketValue, null, null, null, null); 
 			Results.put("3", resultObject);
-			
+
 			System.out.println(truncateDecimal(result,0));
 		} else {
 			System.out.println("0");
@@ -149,24 +151,26 @@ public class UserInterface {
 
 	protected void doAverageLivableAreaForResidences() {
 		String zipCode = promptUserForZipCode();
-		
+
 		// Memoization 
-		if (Results.get("4").getAverageLivableArea().containsKey(zipCode)) {
-			double result = Results.get("4").getAverageLivableArea().get(zipCode); 
-			System.out.println(truncateDecimal(result,0));
+		if (Results.containsKey("4")) {
+			if (Results.get("4").getAverageLivableArea().containsKey(zipCode)) {
+				double result = Results.get("4").getAverageLivableArea().get(zipCode); 
+				System.out.println(truncateDecimal(result,0));
+			}
 		}
-		
+
 		if (!zipCode.equals("0")) {
 			double result = propertyProcessor.getAverageLivableArea(zipCode);
-			
-		// Put into memoization hashmap 
-			Map<String,Double> averageLivableArea = null; 
+
+			// Put into memoization hashmap 
+			Map<String,Double> averageLivableArea = new HashMap<String,Double>(); 
 			averageLivableArea.put(zipCode, result); 
 			Result resultObject = new Result (0, null, null, averageLivableArea, null, null, null); 
 			Results.put("4", resultObject);
-			
+
 			System.out.println(truncateDecimal(result,0));
-			
+
 		} else {
 			System.out.println(zipCode);
 		}
@@ -174,22 +178,24 @@ public class UserInterface {
 
 	protected void doTotalResidentialMarketValuePerCapita() {
 		String zipCode = promptUserForZipCode();
-		
+
 		// Memoization 
-		if (Results.get("5").getTotalMarketValuePerCapita().containsKey(zipCode)) {
-			double result = Results.get("5").getTotalMarketValuePerCapita().get(zipCode); 
-			System.out.println(truncateDecimal(result,0));
+		if (Results.containsKey("5")) {
+			if (Results.get("5").getTotalMarketValuePerCapita().containsKey(zipCode)) {
+				double result = Results.get("5").getTotalMarketValuePerCapita().get(zipCode); 
+				System.out.println(truncateDecimal(result,0));
+			}
 		}
-		
+
 		if (!zipCode.equals("0")) {
 			double result = propertyProcessor.getTotalMarketValuePerCapita(zipCode);
-			
-		// Put into memoization hashmap 
-			Map<String,Double> totalMarketValue = null; 
+
+			// Put into memoization hashmap 
+			Map<String,Double> totalMarketValue = new HashMap<String,Double>(); ; 
 			totalMarketValue.put(zipCode, result); 
 			Result resultObject = new Result (0, null, null, null, totalMarketValue, null, null); 
 			Results.put("5", resultObject);
-			
+
 			System.out.println(truncateDecimal(result,0));
 		} else {
 			System.out.println("0");
@@ -199,28 +205,30 @@ public class UserInterface {
 
 	protected void doAverageParkingFinesAndHighestMarketValuePerZipCode() {
 		String zipCode = promptUserForZipCode();
-		
+
 		// Memoization 
-		if (Results.get("6").getHighestMarketValue().containsKey(zipCode)) {
-			double highestMarketValue  = Results.get("6").getHighestMarketValue().get(zipCode);
-			double averageParkingFine = Results.get("6").getAverageParkingFines().get(zipCode);
-			System.out.println(truncateDecimal(highestMarketValue, 0));
-			System.out.println(truncateDecimal(averageParkingFine, 0));
+		if (Results.containsKey("6")) {
+			if (Results.get("6").getHighestMarketValue().containsKey(zipCode)) {
+				double highestMarketValue  = Results.get("6").getHighestMarketValue().get(zipCode);
+				double averageParkingFine = Results.get("6").getAverageParkingFines().get(zipCode);
+				System.out.println(truncateDecimal(highestMarketValue, 0));
+				System.out.println(truncateDecimal(averageParkingFine, 0));
+			}
 		}
-		
+
 		if (!zipCode.equals("0")) {
 
 			double highestMarketValue = propertyProcessor.getHighestMarketValue(zipCode);
 			double averageParkingFine = parkingProcessor.getAverageParkingFinePerZipCode(zipCode);
 
 			// Put into memoization hashmap 
-			Map<String,Double> highestMarketValueMap = null; 
+			Map<String,Double> highestMarketValueMap = new HashMap<String,Double>(); ; 
 			highestMarketValueMap.put(zipCode, highestMarketValue); 
-			Map<String,Double> averageParkingFineMap = null; 
+			Map<String,Double> averageParkingFineMap = = new HashMap<String,Double>(); ; 
 			averageParkingFineMap.put(zipCode, averageParkingFine); 	
 			Result resultObject = new Result (0, null, null, null, null, highestMarketValueMap, averageParkingFineMap); 
 			Results.put("6", resultObject);
-			
+
 			System.out.println(truncateDecimal(highestMarketValue, 0));
 			System.out.println(truncateDecimal(averageParkingFine, 0));
 

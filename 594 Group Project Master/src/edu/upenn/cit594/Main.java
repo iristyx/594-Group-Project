@@ -22,7 +22,7 @@ public class Main {
 		String[] testArgs = new String[5];
 		testArgs[0] = "json";
 		testArgs[1] = "parking.json";
-		testArgs[2] = "properties.csv";
+		testArgs[2] = "propertiesv2.csv";
 		testArgs[3] = "population.txt";
 		testArgs[4] = "logfile.txt";
 
