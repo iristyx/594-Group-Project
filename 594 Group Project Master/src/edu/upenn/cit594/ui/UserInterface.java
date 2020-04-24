@@ -101,8 +101,11 @@ public class UserInterface {
 
 	protected void doPopulationForAllZipCodes() {
 		int sum = populationProcessor.getTotalPopulation();
+		
+		// Put into memoization hashmap 
 		Result result = new Result (sum, null, null, null, null, null, null); 
 		Results.put("1", result);
+		
 		System.out.println(sum);
 	}
 
