@@ -47,8 +47,8 @@ public class ParkingProcessor {
 	}
 
 	/*
-	 * Return value of total fines divided by population given a ZIP Code Returns 0
-	 * if population is zero
+	 * Return value of total fines divided by population given a ZIP Code 
+	 * Returns 0 if population is zero
 	 */
 	public double getAverageParkingFinePerZipCode(String zipCode) {
 
