@@ -110,6 +110,7 @@ public class UserInterface {
 		HashMap<String,Double> totalParkingFinesPerCapita = parkingProcessor.getTotalFinesPerCapitaForAllPAZipCodes();
 		Map<String,Double> sortedTotalParkingFinesPerCapita = new TreeMap<String,Double>(totalParkingFinesPerCapita);
 		
+		// Put into memoization hashmap 
 		Result result = new Result (0, sortedTotalParkingFinesPerCapita, null, null, null, null, null); 
 		Results.put("2", result);
 		
