@@ -15,17 +15,6 @@ public class Result {
 	Map<String,Double> highestMarketValue;
 	Map<String,Double> averageParkingFines;
 	
-	//double averageMarketValue(zipCode);
-
-	//double result = propertyProcessor.getAverageLivableArea(zipCode);
-
-	//double result = propertyProcessor.getTotalMarketValuePerCapita(zipCode);
-
-
-	//double highestMarketValue = propertyProcessor.getHighestMarketValue(zipCode);
-	//double averageParkingFine = parkingProcessor.getAverageParkingFinePerZipCode(zipCode);
-
-
 
 	public Result(int sum, Map<String, Double> sortedTotalParkingFinesPerCapita, Map<String, Double> averageMarketValue,
 			Map<String, Double> averageLivableArea, Map<String, Double> totalMarketValuePerCapita,
