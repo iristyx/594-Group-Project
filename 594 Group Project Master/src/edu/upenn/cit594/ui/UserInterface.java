@@ -41,7 +41,7 @@ public class UserInterface {
 				"'5' to display total residential market value per capita for a specified ZIP Code\n" +
 				"'6' to display average parking fines and highest market value for a specified ZIP Code\n" +
 				"'0' to exit.");
-		System.out.println("Your selection: ");
+		System.out.println("\nYour selection: ");
 
 		while (true) {
 
@@ -83,7 +83,7 @@ public class UserInterface {
 				throw new IllegalArgumentException("Invalid input! Input must be an integer 1-6, or 0 to exit program.");
 			}
 
-			System.out.println("Please select another option from the list above [1-6], or 0 to exit: ");
+			System.out.println("\nPlease select another option from the list above [1-6], or 0 to exit: ");
 		}
 		in.close();
 	}

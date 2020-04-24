@@ -33,7 +33,7 @@ public class PropertyReader {
 
 	public List<Property> getProperties() {
 
-		Logger l = Logger.getInstance();
+		Logger logger = Logger.getInstance();
 
 		if (!properties.isEmpty()) {
 			return properties;
@@ -43,6 +43,10 @@ public class PropertyReader {
 			try {
 				BufferedReader br = new BufferedReader(new FileReader(filename));
 				String line = null;
+				
+				// Log current time and name of file that is opened
+				logger.log(System.currentTimeMillis());
+				logger.log(filename);
 
 				String headers;
 				headers = br.readLine();

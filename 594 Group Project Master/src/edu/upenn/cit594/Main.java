@@ -17,15 +17,8 @@ public class Main {
 	public static void main(String[] args) {
 		
 		long startTime = System.currentTimeMillis();
-		
-		// Test only - should read in command lines args[] for actual run
-//		String[] testArgs = new String[5];
-//		testArgs[0] = "json";
-//		testArgs[1] = "parking.json";
-//		testArgs[2] = "properties.csv";
-//		testArgs[3] = "population.txt";
-//		testArgs[4] = "logfile.txt";
 
+		// Check number of input arguments
 		if (args.length != 5) {
 			throw new IllegalArgumentException("Invalid number of inputs provided.");
 		}
@@ -46,7 +39,7 @@ public class Main {
 		PropertyReader propertyReader = new PropertyReader(args[2]);
 		PopulationReader populationReader = new PopulationReader(args[3]);
 		
-		// REMOVE BETWEEN COMMENTS BEFORE SUBMISSION
+		// CHECK TIME - REMOVE BETWEEN COMMENTS BEFORE SUBMISSION
 		long endTime = System.currentTimeMillis();
 		long runTime = endTime - startTime;
 		System.out.println("Took " + runTime + "ms to execute.");

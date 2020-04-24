@@ -4,7 +4,7 @@ public class Population {
 
 	String zipCode;
 	String population;
-	
+
 	public Population(String zipCode, String population) {
 		this.zipCode = zipCode;
 		this.population = population;
@@ -21,11 +21,5 @@ public class Population {
 	public String getPopulation() {
 		return population;
 	}
-
-	public void setPopulation(String population) {
-		this.population = population;
-	} 
-	
-
 
 }
