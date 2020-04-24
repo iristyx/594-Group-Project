@@ -39,7 +39,7 @@ public class UserInterface {
 				"'3' to display average market value for residences in a specified ZIP Code\n" +
 				"'4' to display average total livable area for residences in a specified ZIP Code\n" +
 				"'5' to display total residential market value per capita for a specified ZIP Code\n" +
-				"'6' to display CUSTOM FUNCTION WHICH DOES COMPUTATION USING ALL 3 INPUT FILES\n" +
+				"'6' to display average parking fines and highest market value for a specified ZIP Code\n" +
 				"'0' to exit.");
 		System.out.println("Your selection: ");
 
@@ -87,7 +87,6 @@ public class UserInterface {
 				doTotalResidentialMarketValuePerCapita();
 			}
 			else if (choice == 6) {
-				System.out.println("It's not ready, but stay tuned for our custom function!");
 				doAverageParkingFinesAndHighestMarketValuePerZipCode(); 
 			}
 			else {

@@ -47,6 +47,10 @@ public class Main {
 		PropertyReader propertyReader = new PropertyReader(testArgs[2]);
 		PopulationReader populationReader = new PopulationReader(testArgs[3]);
 		
+		long endTime = System.currentTimeMillis();
+		long runTime = endTime - startTime;
+		System.out.println("Took " + runTime + "ms to execute.");
+		
 		// Create processor objects
 		ParkingProcessor parkingProcessor = new ParkingProcessor(parkingReader, populationReader);
 		PopulationProcessor populationProcessor = new PopulationProcessor(populationReader);

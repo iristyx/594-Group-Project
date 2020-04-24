@@ -77,7 +77,6 @@ public class PropertyProcessor {
 		}
 	}
 
-
 	public double getHighestMarketValue(String zipCode) {
 
 		// If ZIP Code is invalid
@@ -87,16 +86,13 @@ public class PropertyProcessor {
 			double highestMarketValue = 0;
 			for (Property property : properties) {
 				if (property.getMarketValue() > highestMarketValue) {
-					highestMarketValue = property.getMarketValue(); 
-				}					
+					highestMarketValue = property.getMarketValue();
+				}
 			}
 			return highestMarketValue;
 		}
-		
+
 	}
-
-
-
 
 	private Set<String> getValidZipCodes() {
 
