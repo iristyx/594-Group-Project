@@ -2,7 +2,10 @@ package edu.upenn.cit594.junittest;
 
 import static org.junit.Assert.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
+
 import org.junit.Test;
 
 import edu.upenn.cit594.data.ParkingViolation;
@@ -30,14 +33,28 @@ public class MethodTest {
 	
 	@Test
 	/*
-	 * Check that PropertyReader is reading all the data properly, total 581221 properties with required information and valid ZIP Codes
+	 * Check that PropertyReader is reading all the data properly, total 581221 properties with required information and valid ZIP Codes (52 unique counts)
 	 */
 	public void PropertyReaderTest() {
 		String filename = "properties.csv";
 		PropertyReader propertyReader = new PropertyReader(filename);
 		List<Property> validProperties = propertyReader.getProperties();
+		Set<String> validZipCodes = propertyReader.getZipCodes();
 		assertEquals(validProperties.size(),581221);
+		assertEquals(validZipCodes.size(),52);
 	}
+
+	@Test
+	/*
+	 * Check that PopulationReader is reading all the data properly, 48 rows in total
+	 */
+	public void PopulationReaderTest() {
+		String filename = "population.txt";
+		PopulationReader populationReader = new PopulationReader(filename);
+		Set<String> validZipCodes = populationReader.getZipCodes();
+		assertEquals(validZipCodes.size(),48);
+	}
+	
 	@Test
 	/*
 	 * 1. Total Population for all ZIP Codes

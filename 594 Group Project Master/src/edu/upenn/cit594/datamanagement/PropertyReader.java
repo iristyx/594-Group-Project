@@ -1,4 +1,5 @@
 package edu.upenn.cit594.datamanagement;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -30,85 +31,104 @@ public class PropertyReader {
 
 	}
 
-public List<Property> getProperties() {
-		
+	public List<Property> getProperties() {
+
 		Logger l = Logger.getInstance();
-		
+
 		if (!properties.isEmpty()) {
 			return properties;
+
 		} else {
+
 			try {
 				BufferedReader br = new BufferedReader(new FileReader(filename));
 				String line = null;
-				
-				String headers;
-				try {
-					headers = br.readLine();
-					String[] headerList = headers.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
-					// Determine column positions of the required fields (market_value,
-					// total_livable_area, zip_code)
-					Integer marketValueIndex = 0;
-					Integer livableAreaIndex = 0;
-					Integer zipCodeIndex = 0;
-					
-					for (int i = 0; i < headerList.length; i++) {
-						if (headerList[i].equals("market_value")) {
-							marketValueIndex = i;
-						} else if (headerList[i].equals("total_livable_area")) {
-							livableAreaIndex = i;
-						} else if (headerList[i].equals("zip_code")) {
-							zipCodeIndex = i;
-						}
-					}
-					
-					// Read the rest of the data
-					Pattern pattern = Pattern.compile("^(\\d{5})(.*)$");
-					
-					while ((line = br.readLine()) != null) {
-									
-						// Split into an array to ignore , within double " " 
-						// Explanation: https://stackoverflow.com/questions/18893390/splitting-on-comma-outside-quotes
-						// Test regex: https://regexr.com/3cddl
-						String[] propertyDetails = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
-						
-						// Read data
-						String marketValue = propertyDetails[marketValueIndex];
-						String livableArea = propertyDetails[livableAreaIndex];
-						String zipCode = propertyDetails[zipCodeIndex];	
 
-						Matcher m = pattern.matcher(zipCode);
-						if (m.matches() && !marketValue.isEmpty() && !livableArea.isEmpty()) {											
-							properties.add(new Property(Double.parseDouble(marketValue), Double.parseDouble(livableArea), m.group(1)));
-					
-						}
+				String headers;
+				headers = br.readLine();
+				String[] headerList = headers.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
+
+				// Determine column positions of the required fields (market_value,
+				// total_livable_area, zip_code)
+				Integer marketValueIndex = 0;
+				Integer livableAreaIndex = 0;
+				Integer zipCodeIndex = 0;
+
+				for (int i = 0; i < headerList.length; i++) {
+					if (headerList[i].equals("market_value")) {
+						marketValueIndex = i;
+					} else if (headerList[i].equals("total_livable_area")) {
+						livableAreaIndex = i;
+					} else if (headerList[i].equals("zip_code")) {
+						zipCodeIndex = i;
 					}
-					br.close();
-					return properties;
-					
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
 				}
 
-			
-			} catch (FileNotFoundException e) {
-				System.out.println("FileNotFoundException: Properties input file not found.");
+				// Read the rest of the data
+				while ((line = br.readLine()) != null) {
+
+					// Split into an array to ignore , within double " " 
+					// Explanation: https://stackoverflow.com/questions/18893390/splitting-on-comma-outside-quotes
+					// Test regex: https://regexr.com/3cddl
+					String[] propertyDetails = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
+
+					// Read data
+					String marketValue = propertyDetails[marketValueIndex];
+					String livableArea = propertyDetails[livableAreaIndex];
+					String zipCode = propertyDetails[zipCodeIndex];	
+					String fiveDigitsZipCode = getValidFiveDigitsZipCode(zipCode);
+
+					// Check if marketValue and livableArea contain parsable values, and that zipCode has valid five digits ZIP Code
+					if ((!marketValue.isEmpty()) && (!livableArea.isEmpty()) && (fiveDigitsZipCode != null)) {
+						try {
+							properties.add(new Property(Double.parseDouble(marketValue), Double.parseDouble(livableArea), fiveDigitsZipCode));
+						} catch (Exception e) {
+						}
+					}
+				}
+
+				br.close();
+				return properties;
+
+			} catch (IOException e) {
+				e.printStackTrace();
 			} catch (SecurityException e1) {
 				System.out.println("SecurityException: Properties input file cannot be opened.");
 			}
+
 			return null;
 		}
 	}
-	
+
 	public Set<String> getZipCodes() {
-		
+
 		// If set of ZIP Code was not yet generated
-		if (zipCodes.isEmpty()) {	
+		if (zipCodes.isEmpty()) {
 			for (Property property : properties) {
 				zipCodes.add(property.getZipCode());
 			}
 		}
 		return zipCodes;
 	}
+
+	private String getValidFiveDigitsZipCode(String zipCode) {
+		if (hasValidFiveDigitsZipCode(zipCode)) {
+			return zipCode.substring(0, 5);
+		} 
+		return null;
+	}
+
+	private boolean hasValidFiveDigitsZipCode(String zipCode) {
+
+		try {
+			int d = Integer.parseInt(zipCode.substring(0, 5));
+			if (d > 9999 && d < 100000) {
+				return true;
+			}
+		}
+		catch (Exception e) {}
+		return false;
+	}
 	
+
 }
