@@ -26,6 +26,7 @@ public class ParkingProcessor {
 		this.parkingViolations = parkingReader.getParkingViolations();
 		this.populationZipCodes = populationReader.getZipCodes();
 
+
 	}
 
 	/*
@@ -55,16 +56,17 @@ public class ParkingProcessor {
 	}
 
 	/*
-	 * Return sum of number of fines in a given ZIP Code
+	 * Return sum of number of fines in a given ZIP Code (ignore non PA values)
 	 * Return 0 if input ZIP code is invalid
 	 */
-	public int getNumberOfFinesByZipCode(String zipCode) {
+	public int getNumberOfPAFinesByZipCode(String zipCode) {
 		int fineCount = 0;
 		for (ParkingViolation parking : parkingViolations) {
-			if (parking.getZipCode().equals(zipCode)) {
+			if (parking.getZipCode().equals(zipCode) && parking.getState().equalsIgnoreCase("pa")) {
 				fineCount ++;
 			}
 		}
+
 		return fineCount;
 	}
 	

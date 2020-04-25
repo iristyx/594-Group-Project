@@ -27,6 +27,7 @@ public class PropertyProcessor {
 		propertyZipCodes = propertyReader.getZipCodes();
 		populationZipCodes = populationReader.getZipCodes();
 		validZipCodes = getValidZipCodes();
+
 	}
 
 	/*
@@ -57,8 +58,11 @@ public class PropertyProcessor {
 		}
 	}
 
+	/*
+	 * Return total market value per capita by ZIP Code
+	 */
 	public double getTotalMarketValuePerCapita(String zipCode) {
-		
+
 		// If ZIP Code is invalid
 		if (!validZipCodes.contains(zipCode)) {
 			return 0.0;
@@ -79,16 +83,47 @@ public class PropertyProcessor {
 		}
 	}
 
-	private Set<String> getValidZipCodes() {
+	/*
+	 * Return set of ZIP Codes that are both in populations and property input files
+	 */
+	public Set<String> getValidZipCodes() {
 
 		if (validZipCodes.isEmpty()) {
-			for (String zipCode : propertyZipCodes) {
-				if (populationZipCodes.contains(zipCode)) {
+			for (String zipCode : getPropertiesZipCodes()) {
+				if (getPopulationZipCodes().contains(zipCode)) {
 					validZipCodes.add(zipCode);
 				}
 			}
 		}
 		return validZipCodes;
+	}
+
+	/*
+	 * Return set of ZIP Codes in properties input file
+	 */
+	public Set<String> getPropertiesZipCodes() {
+
+		if (propertyZipCodes.isEmpty()) {
+			for (Property property : properties) {
+				propertyZipCodes.add(property.getZipCode());
+			}
+		}
+
+		return propertyZipCodes;
+	}
+
+	/*
+	 * Return set of ZIP Codes in population input file
+	 */
+	public Set<String> getPopulationZipCodes() {
+
+		if (populationZipCodes.isEmpty()) {
+			for (String zipCode : populations.keySet()) {
+				populationZipCodes.add(zipCode);
+			}
+		}
+
+		return populationZipCodes;
 	}
 
 }

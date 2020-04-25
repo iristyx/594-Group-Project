@@ -1,7 +1,6 @@
 package edu.upenn.cit594.ui;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -36,11 +35,11 @@ public class UserInterface {
 		// Prompt user for input
 		System.out.println("Please key in one of the numbers from the list below:\n\n" + 
 				"'1' to display total population for all ZIP Codes\n" +
-				"'2' to display total parking fines per capita for each ZIP Code\n" + 
+				"'2' to display total parking fines per capita for each ZIP Code (PA state only)\n" + 
 				"'3' to display average market value for residences in a specified ZIP Code\n" +
 				"'4' to display average total livable area for residences in a specified ZIP Code\n" +
 				"'5' to display total residential market value per capita for a specified ZIP Code\n" +
-				"'6' to display total market value over number of parking fines for a specified ZIP Code\n" +
+				"'6' to display per capita market value over number of parking fines for a specified ZIP Code\n" +
 				"'0' to exit.");
 		System.out.println("Your selection: ");
 
@@ -77,7 +76,7 @@ public class UserInterface {
 			}
 			
 			else if (choice.equals("6")) {
-				doTotalMarketValuePerFineByZipCode(); 
+				doPerCapitaMarketValuePerFineByZipCode(); 
 			}
 			else {
 				throw new IllegalArgumentException("Invalid input! Input must be an integer 1-6, or 0 to exit program.");
@@ -246,7 +245,7 @@ public class UserInterface {
 	 * Result truncated to an integer, not rounded
 	 * Display '0' if total residential market value for ZIP Code is 0, if number of fines is 0, or if user inputs invalid ZIP Code
 	 */
-	protected void doTotalMarketValuePerFineByZipCode() {
+	protected void doPerCapitaMarketValuePerFineByZipCode() {
 
 		String zipCode = promptUserForZipCode();
 		HashMap<String,Double> resultsMap = new HashMap<>();
@@ -254,17 +253,15 @@ public class UserInterface {
 		// If computation was not performed before
 		if (!results.containsKey("6")) {
 			double perCapitaResidentialMarketValue = propertyProcessor.getTotalMarketValuePerCapita(zipCode);
-			double fineCount = parkingProcessor.getNumberOfFinesByZipCode(zipCode);
+			double fineCount = parkingProcessor.getNumberOfPAFinesByZipCode(zipCode);
 			double perCapitaMarketValueOverNumberOfFines;
-			
 			
 			// If there are no fines for the ZIP Code
 			if (fineCount == 0) {
 				perCapitaMarketValueOverNumberOfFines = 0;
 			}
-			
+
 			perCapitaMarketValueOverNumberOfFines = perCapitaResidentialMarketValue / fineCount; 
-			
 			resultsMap.put(zipCode,perCapitaMarketValueOverNumberOfFines);
 			results.put("6", new Result<Map<String,Double>>(resultsMap));
 		}
@@ -275,7 +272,7 @@ public class UserInterface {
 					
 			// If computation was not performed before for the current input ZIP Code
 			double perCapitaResidentialMarketValue = propertyProcessor.getTotalMarketValuePerCapita(zipCode);
-			double fineCount = parkingProcessor.getNumberOfFinesByZipCode(zipCode);
+			double fineCount = parkingProcessor.getNumberOfPAFinesByZipCode(zipCode);
 			double perCapitaMarketValueOverNumberOfFines = perCapitaResidentialMarketValue / fineCount; 
 			
 			resultsMap.put(zipCode,perCapitaMarketValueOverNumberOfFines);
