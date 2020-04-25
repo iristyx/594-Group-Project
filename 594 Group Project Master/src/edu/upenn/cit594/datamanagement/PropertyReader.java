@@ -67,9 +67,7 @@ public class PropertyReader {
 				// Read the rest of the data
 				while ((line = br.readLine()) != null) {
 
-					// Split into an array to ignore , within double " " 
-					// Explanation: https://stackoverflow.com/questions/18893390/splitting-on-comma-outside-quotes
-					// Test regex: https://regexr.com/3cddl
+					
 					String[] propertyDetails = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
 
 					// Read data
@@ -92,7 +90,7 @@ public class PropertyReader {
 				return properties;
 
 			} catch (IOException e) {
-				e.printStackTrace();
+				System.out.println("IOException: Properties input file cannot be opened.");
 			} catch (SecurityException e1) {
 				System.out.println("SecurityException: Properties input file cannot be opened.");
 			}

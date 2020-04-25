@@ -1,7 +1,8 @@
 package edu.upenn.cit594;
 
+import edu.upenn.cit594.datamanagement.ParkingCSVReader;
+import edu.upenn.cit594.datamanagement.ParkingJSONReader;
 import edu.upenn.cit594.datamanagement.ParkingReader;
-import edu.upenn.cit594.datamanagement.ParkingReaderCreator;
 import edu.upenn.cit594.datamanagement.PopulationReader;
 import edu.upenn.cit594.datamanagement.PropertyReader;
 import edu.upenn.cit594.logging.Logger;
@@ -33,8 +34,12 @@ public class Main {
 		}
 
 		// Create reader objects
-		ParkingReaderCreator parkingReaderCreator = new ParkingReaderCreator(args[0], args[1]); 
-		ParkingReader parkingReader = parkingReaderCreator.createParkingReader();
+		ParkingReader parkingReader;
+		if (args[0].equals("csv")) {
+			parkingReader = new ParkingCSVReader(args[1]);
+		} else {
+			parkingReader = new ParkingJSONReader(args[1]);
+		}
 		PropertyReader propertyReader = new PropertyReader(args[2]);
 		PopulationReader populationReader = new PopulationReader(args[3]);
 				

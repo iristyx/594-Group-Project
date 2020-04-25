@@ -2,6 +2,7 @@ package edu.upenn.cit594.datamanagement;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -26,7 +27,7 @@ public class PopulationReader {
 	
 	public HashMap<String, Integer> getPopulations() {
 		
-		Logger l = Logger.getInstance();
+		Logger logger = Logger.getInstance();
 		
 		if (!populations.isEmpty()) {
 			return populations;
@@ -37,8 +38,8 @@ public class PopulationReader {
 				in = new Scanner(new FileReader(filename));
 				
 				// Log current time and name of file that is opened
-				l.log(System.currentTimeMillis());
-				l.log(filename);
+				logger.log(System.currentTimeMillis());
+				logger.log(filename);
 				
 				while (in.hasNext()) {
 					String population = in.nextLine();

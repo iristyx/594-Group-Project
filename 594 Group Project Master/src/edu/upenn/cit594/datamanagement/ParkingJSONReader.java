@@ -30,7 +30,7 @@ public class ParkingJSONReader implements ParkingReader {
 	@Override
 	public List<ParkingViolation> getParkingViolations() {
 		
-		Logger l = Logger.getInstance();
+		Logger logger = Logger.getInstance();
 		
 		if (!parkingViolations.isEmpty()) {
 			return parkingViolations;
@@ -40,8 +40,8 @@ public class ParkingJSONReader implements ParkingReader {
 				JSONArray parkingArray = (JSONArray) parser.parse(new FileReader(filename));
 				
 				// Log current time and name of file that is opened
-				l.log(System.currentTimeMillis());
-				l.log(filename);
+				logger.log(System.currentTimeMillis());
+				logger.log(filename);
 				
 				Iterator<?> iter = parkingArray.iterator();
 				while (iter.hasNext()) {
