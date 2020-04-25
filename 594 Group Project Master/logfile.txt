@@ -1,3 +1,5 @@
-1587794891043 csv parking.csv properties.csv population.txt logfile.txt
-1587794891093
+1587795237560 csv parking.csv properties.csv population.txt logfile.txt
+1587795237576
 parking.csv
+1587795237874
+properties.csv
