@@ -3,6 +3,7 @@ package edu.upenn.cit594;
 import edu.upenn.cit594.datamanagement.ParkingCSVReader;
 import edu.upenn.cit594.datamanagement.ParkingJSONReader;
 import edu.upenn.cit594.datamanagement.ParkingReader;
+import edu.upenn.cit594.datamanagement.ParkingReaderCreator;
 import edu.upenn.cit594.datamanagement.PopulationReader;
 import edu.upenn.cit594.datamanagement.PropertyReader;
 import edu.upenn.cit594.logging.Logger;
@@ -34,12 +35,7 @@ public class Main {
 		}
 
 		// Create reader objects
-		ParkingReader parkingReader;
-		if (args[0].equals("csv")) {
-			parkingReader = new ParkingCSVReader(args[1]);
-		} else {
-			parkingReader = new ParkingJSONReader(args[1]);
-		}
+		ParkingReader parkingReader = new ParkingReaderCreator(args[0],args[1]).createReader();
 		PropertyReader propertyReader = new PropertyReader(args[2]);
 		PopulationReader populationReader = new PopulationReader(args[3]);
 				
@@ -54,7 +50,9 @@ public class Main {
 		// REMOVE LATER
 		long endTime = System.currentTimeMillis();
 		long timeElapsed = endTime - startTime;
-		System.out.println("Took " + timeElapsed + "ms to execute.");
+		long minElapsed = timeElapsed / (60*1000);
+		long secElapsed = (timeElapsed % (60*1000)) / 1000;
+		System.out.println("Took " + minElapsed + "m" +  secElapsed + "s to execute.");
 		
 		ui.start();
 		

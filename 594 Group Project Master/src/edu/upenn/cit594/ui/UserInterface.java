@@ -46,37 +46,37 @@ public class UserInterface {
 
 		while (true) {
 
-			int choice = in.nextInt();
+			String choice = in.next();
 
 			// Log current time and user selection
 			logger.log(System.currentTimeMillis());
 			logger.log("User Selection:" + choice);
 
-			if (choice == 0) {
+			if (choice.equals("0")) {
 				break;
 			}
 			
-			else if (choice == 1) {
+			else if (choice.equals("1")) {
 				doPopulationForAllZipCodes();
 			} 
 			
-			else if (choice == 2) {
+			else if (choice.equals("2")) {
 				doTotalParkingFinesPerCapita();
 			}
 			
-			else if (choice == 3) {
+			else if (choice.equals("3")) {
 				doAverageMarketValueForResidences();
 			}
 			
-			else if (choice == 4) {
+			else if (choice.equals("4")) {
 				doAverageLivableAreaForResidences();
 			}
 			
-			else if (choice == 5) {
+			else if (choice.equals("5")) {
 				doTotalResidentialMarketValuePerCapita();
 			}
 			
-			else if (choice == 6) {
+			else if (choice.equals("6")) {
 				doTotalMarketValuePerFineByZipCode(); 
 			}
 			else {
@@ -92,7 +92,8 @@ public class UserInterface {
 	
 
 	/**
-	 * Task 1
+	 * Task 1: Display the total population of all of the ZIP Codes in the population input file
+	 * Should return 1526206 based on provided input file 'population.txt'
 	 */
 	protected void doPopulationForAllZipCodes() {
 		
@@ -109,7 +110,10 @@ public class UserInterface {
 
 	
 	/**
-	 * Task 2
+	 * Task 2: Display the total fines per capita for each ZIP Code
+	 * i.e. total aggregates fines divided by population of the ZIP Code
+	 * ZIP Codes must be written to screen in ascending numerical order
+	 * Total fines per capita must be displayed with precision of four decimal places (truncated, not rounded)
 	 */
 	protected void doTotalParkingFinesPerCapita() {
 		
@@ -130,7 +134,10 @@ public class UserInterface {
 
 	
 	/**
-	 * Task 3
+	 * Task 3: Display the average residential market value for user-specified ZIP Code
+	 * i.e. total market value for all residences in the ZIP Code divided by the number of residences
+	 * Result must be truncated to an integer, not rounded
+	 * Display '0' if total residential market value for ZIP Code is 0 or if user inputs invalid ZIP Code
 	 */
 	protected void doAverageMarketValueForResidences() {
 		
@@ -164,7 +171,10 @@ public class UserInterface {
 	
 	
 	/**
-	 * Task 4
+	 * Task 4: Display the average residential livable area for user-specified ZIP Code
+	 * i.e. sum of total livable areas for all residences in the ZIP Code divided by the number of residences
+	 * Result must be truncated to an integer, not rounded
+	 * Display '0' if total residential livable area for ZIP Code is 0 or if user inputs invalid ZIP Code
 	 */
 	protected void doAverageLivableAreaForResidences() {
 		String zipCode = promptUserForZipCode();
@@ -197,7 +207,9 @@ public class UserInterface {
 	
 	
 	/**
-	 * Task 5
+	 * Task 5: Display the total residential market value per capita for user-specified ZIP Code
+	 * Result must be truncated to an integer, not rounded
+	 * Display '0' if total residential market value for ZIP Code is 0 or if user inputs invalid ZIP Code
 	 */
 	protected void doTotalResidentialMarketValuePerCapita() {
 		String zipCode = promptUserForZipCode();
@@ -230,7 +242,9 @@ public class UserInterface {
 
 
 	/**
-	 * Task 6
+	 * Task 6: Display the residential market value per capita over number of fines for a user-specified ZIP Code
+	 * Result truncated to an integer, not rounded
+	 * Display '0' if total residential market value for ZIP Code is 0, if number of fines is 0, or if user inputs invalid ZIP Code
 	 */
 	protected void doTotalMarketValuePerFineByZipCode() {
 
@@ -239,9 +253,17 @@ public class UserInterface {
 		
 		// If computation was not performed before
 		if (!results.containsKey("6")) {
-			double totalResidentialMarketValue = propertyProcessor.getTotalMarketValuePerCapita(zipCode);
+			double perCapitaResidentialMarketValue = propertyProcessor.getTotalMarketValuePerCapita(zipCode);
 			double fineCount = parkingProcessor.getNumberOfFinesByZipCode(zipCode);
-			double perCapitaMarketValueOverNumberOfFines = totalResidentialMarketValue * fineCount; 
+			double perCapitaMarketValueOverNumberOfFines;
+			
+			
+			// If there are no fines for the ZIP Code
+			if (fineCount == 0) {
+				perCapitaMarketValueOverNumberOfFines = 0;
+			}
+			
+			perCapitaMarketValueOverNumberOfFines = perCapitaResidentialMarketValue / fineCount; 
 			
 			resultsMap.put(zipCode,perCapitaMarketValueOverNumberOfFines);
 			results.put("6", new Result<Map<String,Double>>(resultsMap));
@@ -252,9 +274,9 @@ public class UserInterface {
 			resultsMap = (HashMap<String, Double>) results.get("6").getResult();
 					
 			// If computation was not performed before for the current input ZIP Code
-			double totalResidentialMarketValue = propertyProcessor.getTotalMarketValuePerCapita(zipCode);
+			double perCapitaResidentialMarketValue = propertyProcessor.getTotalMarketValuePerCapita(zipCode);
 			double fineCount = parkingProcessor.getNumberOfFinesByZipCode(zipCode);
-			double perCapitaMarketValueOverNumberOfFines = totalResidentialMarketValue * fineCount; 
+			double perCapitaMarketValueOverNumberOfFines = perCapitaResidentialMarketValue / fineCount; 
 			
 			resultsMap.put(zipCode,perCapitaMarketValueOverNumberOfFines);
 			results.put("6", new Result<Map<String,Double>>(resultsMap));

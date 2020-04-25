@@ -102,7 +102,5 @@ public class ParkingProcessor {
 		}
 		return totalFines;
 	}
-
-	
 	
 }
