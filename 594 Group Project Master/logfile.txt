@@ -1,3 +1,0 @@
-1587669360031 json parking.json properties.csv population.txt logfile.txt
-1587669360397
-properties.csv

@@ -82,7 +82,6 @@ public class PropertyProcessor {
 		// If ZIP Code is invalid
 		if (!validZipCodes.contains(zipCode)) {
 			return 0.0;
-			
 		} else {
 			double highestMarketValue = 0;
 			for (Property property : properties) {

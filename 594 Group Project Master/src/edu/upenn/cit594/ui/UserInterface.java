@@ -1,10 +1,12 @@
 package edu.upenn.cit594.ui;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.TreeMap;
+
 
 import edu.upenn.cit594.data.Result;
 import edu.upenn.cit594.logging.Logger;
@@ -39,55 +41,60 @@ public class UserInterface {
 				"'3' to display average market value for residences in a specified ZIP Code\n" +
 				"'4' to display average total livable area for residences in a specified ZIP Code\n" +
 				"'5' to display total residential market value per capita for a specified ZIP Code\n" +
-				"'6' to display average parking fines and highest market value for a specified ZIP Code\n" +
+				"'6' to display total market value of people with parking fines for a specified ZIP Code\n" +
 				"'0' to exit.");
-		System.out.println("\nYour selection: ");
+		System.out.println("Your selection: ");
 
 		while (true) {
 
-			String choice = in.next();
+			int choice = in.nextInt();
 
 			// Log current time and user selection
 			l.log(System.currentTimeMillis());
 			l.log("User Selection:" + choice);
 
-			if (choice.equals("0")) {
+			if (choice == 0) {
 				break;
 			}
 			
-			else if (choice.equals("1")) {
+			else if (choice == 1) {
 				doPopulationForAllZipCodes();
 			} 
 			
-			else if (choice.equals("2")) {
+			else if (choice == 2) {
 				doTotalParkingFinesPerCapita();
 			}
 			
-			else if (choice.equals("3")) {
+			else if (choice == 3) {
 				doAverageMarketValueForResidences();
 			}
 			
-			else if (choice.equals("4")) {
+			else if (choice == 4) {
 				doAverageLivableAreaForResidences();
 			}
 			
-			else if (choice.equals("5")) {
+			else if (choice == 5) {
 				doTotalResidentialMarketValuePerCapita();
 			}
 			
-			else if (choice.equals("6")) {
-				doAverageParkingFinesAndHighestMarketValuePerZipCode(); 
+			else if (choice == 6) {
+				doTotalMarketValueOfPeopleWithFines(); 
 			}
-			
 			else {
 				throw new IllegalArgumentException("Invalid input! Input must be an integer 1-6, or 0 to exit program.");
 			}
 
-			System.out.println("\nPlease select another option from the list above [1-6], or 0 to exit: ");
+			System.out.println("Please select another option from the list above [1-6], or 0 to exit: ");
 		}
 		in.close();
 	}
 
+	
+	
+
+	/**
+	 * Task 1
+	 */
 	protected void doPopulationForAllZipCodes() {
 		
 		// If computation was not performed before
@@ -101,6 +108,10 @@ public class UserInterface {
 		System.out.println(result);
 	}
 
+	
+	/**
+	 * Task 2
+	 */
 	protected void doTotalParkingFinesPerCapita() {
 		
 		// If computation was not performed before
@@ -118,6 +129,10 @@ public class UserInterface {
 		}
 	}
 
+	
+	/**
+	 * Task 3
+	 */
 	protected void doAverageMarketValueForResidences() {
 		
 		String zipCode = promptUserForZipCode();
@@ -147,6 +162,11 @@ public class UserInterface {
 		System.out.println(truncateDecimal(result,0));
 	}
 
+	
+	
+	/**
+	 * Task 4
+	 */
 	protected void doAverageLivableAreaForResidences() {
 		String zipCode = promptUserForZipCode();
 		HashMap<String,Double> resultsMap = new HashMap<>();
@@ -175,27 +195,33 @@ public class UserInterface {
 		System.out.println(truncateDecimal(result,0));
 	}
 
+	
+	
+	/**
+	 * Task 5
+	 */
 	protected void doTotalResidentialMarketValuePerCapita() {
 		String zipCode = promptUserForZipCode();
 		HashMap<String,Double> resultsMap = new HashMap<>();
 		
 		// If computation was not performed before
 		if (!Results.containsKey("5")) {
-			double totalResidentialMarketValuePerCapita = propertyProcessor.getTotalMarketValuePerCapita(zipCode);
-			resultsMap.put(zipCode,totalResidentialMarketValuePerCapita);
+			double totalResidentialMarketValue = propertyProcessor.getTotalMarketValuePerCapita(zipCode);
+			resultsMap.put(zipCode,totalResidentialMarketValue);
 			Results.put("5", new Result<Map<String,Double>>(resultsMap));
-		} 
-		
+		}
+
 		// If computation was performed before, check if it was done for the current input ZIP Code
 		else {
-			resultsMap = (HashMap<String, Double>) Results.get("5").getResult();
-		
+			resultsMap = (HashMap<String, Double>) Results.get("4").getResult();
+					
 			// If computation was not performed before for the current input ZIP Code
 			if (!resultsMap.containsKey(zipCode)) {
-				double totalResidentialMarketValuePerCapita = propertyProcessor.getAverageLivableArea(zipCode);
-				resultsMap.put(zipCode,totalResidentialMarketValuePerCapita);
-				Results.get("5").setResult(resultsMap);
+				double totalResidentialMarketValue = propertyProcessor.getTotalMarketValuePerCapita(zipCode);
+				resultsMap.put(zipCode,totalResidentialMarketValue);
+				Results.put("5", new Result<Map<String,Double>>(resultsMap));
 			}
+			
 		}
 		
 		// Get computed answer from Results
@@ -204,37 +230,44 @@ public class UserInterface {
 	}
 
 
-	protected void doAverageParkingFinesAndHighestMarketValuePerZipCode() {
+	/**
+	 * Task 6
+	 */
+	protected void doTotalMarketValueOfPeopleWithFines() {
+
 		String zipCode = promptUserForZipCode();
-		HashMap<String,Double[]> resultsMap = new HashMap<>();
+		HashMap<String,Double> resultsMap = new HashMap<>();
 		
 		// If computation was not performed before
 		if (!Results.containsKey("6")) {
-			Double[] values = new Double[2];
-			values[0] = parkingProcessor.getAverageParkingFinePerZipCode(zipCode);
-			values[1] = propertyProcessor.getHighestMarketValue(zipCode);
-			resultsMap.put(zipCode,values);
-			Results.put("6", new Result<Map<String,Double[]>>(resultsMap));
-		} 
+			double totalResidentialMarketValue = propertyProcessor.getTotalMarketValuePerCapita(zipCode);
+			double fineCount = parkingProcessor.getNumberOfFinesByZipCode(zipCode);
+			double perCapitaMarketValueOverNumberOfFines = totalResidentialMarketValue * fineCount; 
+			
+			resultsMap.put(zipCode,perCapitaMarketValueOverNumberOfFines);
+			Results.put("6", new Result<Map<String,Double>>(resultsMap));
+		}
+
 		// If computation was performed before, check if it was done for the current input ZIP Code
 		else {
-			resultsMap = (HashMap<String, Double[]>) Results.get("6").getResult();
-		
-			// If computation was not performed before for the current input ZIP Code
-			if (!resultsMap.containsKey(zipCode)) {
-				Double[] values = new Double[2];
-				values[0] = parkingProcessor.getAverageParkingFinePerZipCode(zipCode);
-				values[1] = propertyProcessor.getHighestMarketValue(zipCode);
-				resultsMap.put(zipCode,values);
-				Results.get("6").setResult(resultsMap);
-			}
-		}
+			resultsMap = (HashMap<String, Double>) Results.get("6").getResult();
 					
+			// If computation was not performed before for the current input ZIP Code
+			double totalResidentialMarketValue = propertyProcessor.getTotalMarketValuePerCapita(zipCode);
+			double fineCount = parkingProcessor.getNumberOfFinesByZipCode(zipCode);
+			double perCapitaMarketValueOverNumberOfFines = totalResidentialMarketValue * fineCount; 
+			
+			resultsMap.put(zipCode,perCapitaMarketValueOverNumberOfFines);
+			Results.put("6", new Result<Map<String,Double>>(resultsMap));
+			
+		}
+		
 		// Get computed answer from Results
-		Double[] results = resultsMap.get(zipCode);
-		System.out.println(truncateDecimal(results[0],4) + "\t" + truncateDecimal(results[1],0));
+		double result = resultsMap.get(zipCode);
+		System.out.println(truncateDecimal(result,0));
+		
+		
 	}
-	
 
 	protected String promptUserForZipCode() {
 		Logger l = Logger.getInstance();

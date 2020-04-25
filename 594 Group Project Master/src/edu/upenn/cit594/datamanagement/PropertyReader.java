@@ -33,7 +33,7 @@ public class PropertyReader {
 
 	public List<Property> getProperties() {
 
-		Logger logger = Logger.getInstance();
+		Logger l = Logger.getInstance();
 
 		if (!properties.isEmpty()) {
 			return properties;
@@ -43,10 +43,6 @@ public class PropertyReader {
 			try {
 				BufferedReader br = new BufferedReader(new FileReader(filename));
 				String line = null;
-				
-				// Log current time and name of file that is opened
-				logger.log(System.currentTimeMillis());
-				logger.log(filename);
 
 				String headers;
 				headers = br.readLine();
@@ -82,6 +78,7 @@ public class PropertyReader {
 					String zipCode = propertyDetails[zipCodeIndex];	
 					String fiveDigitsZipCode = getValidFiveDigitsZipCode(zipCode);
 
+					
 					// Check if marketValue and livableArea contain parsable values, and that zipCode has valid five digits ZIP Code
 					if ((!marketValue.isEmpty()) && (!livableArea.isEmpty()) && (fiveDigitsZipCode != null)) {
 						try {
