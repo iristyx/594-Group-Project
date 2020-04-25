@@ -17,40 +17,27 @@ public class Main {
 	public static void main(String[] args) {
 		
 		long startTime = System.currentTimeMillis();
-		
-		// Test only - should read in command lines args[] for actual run
-		String[] testArgs = new String[5];
-		testArgs[0] = "json";
-		testArgs[1] = "parking2.json";
-		testArgs[2] = "properties3.csv";
-		testArgs[3] = "population3.txt";
-		testArgs[4] = "logfile.txt";
-
-		logFile = testArgs[4];
+		logFile = args[4];
 		
 		Logger logger = Logger.getInstance();
 		
 		// Log the start time and command line args
-		logger.log(startTime + " " + testArgs[0] + " " + testArgs[1] + " " + testArgs[2] + " " + testArgs[3] + " " + testArgs[4]);
+		logger.log(startTime + " " + args[0] + " " + args[1] + " " + args[2] + " " + args[3] + " " + args[4]);
 		
-		if (testArgs.length != 5) {
+		if (args.length != 5) {
 			throw new IllegalArgumentException("Invalid number of inputs provided.");
 		}
 
-		if (!testArgs[0].equalsIgnoreCase("csv") && !testArgs[0].equalsIgnoreCase("json")) {
+		if (!args[0].equalsIgnoreCase("csv") && !args[0].equalsIgnoreCase("json")) {
 			throw new IllegalArgumentException("Invalid format for input parking file.");
 		}
 
 		// Create reader objects
-		ParkingReaderCreator parkingReaderCreator = new ParkingReaderCreator(testArgs[0], testArgs[1]); 
+		ParkingReaderCreator parkingReaderCreator = new ParkingReaderCreator(args[0], args[1]); 
 		ParkingReader parkingReader = parkingReaderCreator.createParkingReader();
-		PropertyReader propertyReader = new PropertyReader(testArgs[2]);
-		PopulationReader populationReader = new PopulationReader(testArgs[3]);
-		
-		long endTime = System.currentTimeMillis();
-		long runTime = endTime - startTime;
-		System.out.println("Took " + runTime + "ms to execute.");
-		
+		PropertyReader propertyReader = new PropertyReader(args[2]);
+		PopulationReader populationReader = new PopulationReader(args[3]);
+				
 		// Create processor objects
 		ParkingProcessor parkingProcessor = new ParkingProcessor(parkingReader, populationReader);
 		PopulationProcessor populationProcessor = new PopulationProcessor(populationReader);
@@ -58,6 +45,12 @@ public class Main {
 		
 		// Create user interface
 		UserInterface ui = new UserInterface(parkingProcessor,populationProcessor,propertyProcessor); 
+		
+		// REMOVE LATER
+		long endTime = System.currentTimeMillis();
+		long timeElapsed = endTime - startTime;
+		System.out.println("Took " + timeElapsed + "ms to execute.");
+		
 		ui.start();
 		
 		

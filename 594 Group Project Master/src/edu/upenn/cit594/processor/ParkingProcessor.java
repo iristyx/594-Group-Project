@@ -47,36 +47,8 @@ public class ParkingProcessor {
 	}
 
 	/*
-	 * Return value the average parking fine given a ZIP Code 
-	 * Returns 0 if population is zero
-	 */
-	public double getAverageParkingFinePerZipCode(String zipCode) {
-
-		double parkingViolationTotal = 0.0;
-		double averageParkingFinePerZipCode = 0.0;
-		double population = 0.0;
-
-		population = populations.get(zipCode);
-
-		if (population == 0.0) {
-			return 0.0;
-		}
-
-		for (ParkingViolation parkingViolation : parkingViolations) {
-			if (parkingViolation.getZipCode().equals(zipCode)) {
-				parkingViolationTotal = parkingViolationTotal + parkingViolation.getFine();
-			}
-		}
-
-		averageParkingFinePerZipCode = parkingViolationTotal / population;
-		
-		return averageParkingFinePerZipCode;
-
-	}
-
-
-	/*
 	 * Return sum of number of fines in a given ZIP Code
+	 * Return 0 if input ZIP code is invalid
 	 */
 	public double getNumberOfFinesByZipCode(String zipCode) {
 		double fineCount = 0;
@@ -112,6 +84,7 @@ public class ParkingProcessor {
 
 	/*
 	 * Private helper method: return sum of total fines in a given ZIP Code
+	 * Return 0 of input ZIP Code is not invalid 
 	 */
 	private double getTotalFinesByZipCode(String zipCode) {
 		double totalFines = 0;

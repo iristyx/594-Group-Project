@@ -48,7 +48,7 @@ public class PropertyProcessor {
 	 */
 	private double getAverage(String zipCode, AveragePropertyCalculator calculator) {
 		// If ZIP Code is invalid
-		if (!validZipCodes.contains(zipCode)) {
+		if (!propertyZipCodes.contains(zipCode)) {
 			return 0.0;
 		} else {
 			double average = calculator.getAverage(zipCode, properties);
@@ -57,6 +57,7 @@ public class PropertyProcessor {
 	}
 
 	public double getTotalMarketValuePerCapita(String zipCode) {
+		
 		// If ZIP Code is invalid
 		if (!validZipCodes.contains(zipCode)) {
 			return 0.0;
@@ -75,23 +76,6 @@ public class PropertyProcessor {
 				return totalMarketValuePerCapita;
 			}
 		}
-	}
-
-	public double getHighestMarketValue(String zipCode) {
-
-		// If ZIP Code is invalid
-		if (!validZipCodes.contains(zipCode)) {
-			return 0.0;
-		} else {
-			double highestMarketValue = 0;
-			for (Property property : properties) {
-				if (property.getMarketValue() > highestMarketValue) {
-					highestMarketValue = property.getMarketValue();
-				}
-			}
-			return highestMarketValue;
-		}
-
 	}
 
 	private Set<String> getValidZipCodes() {
