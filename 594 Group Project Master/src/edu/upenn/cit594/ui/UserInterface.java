@@ -32,7 +32,7 @@ public class UserInterface {
 
 	public void start() {
 
-		Logger l = Logger.getInstance();
+		Logger logger = Logger.getInstance();
 
 		// Prompt user for input
 		System.out.println("Please key in one of the numbers from the list below:\n\n" + 
@@ -41,7 +41,7 @@ public class UserInterface {
 				"'3' to display average market value for residences in a specified ZIP Code\n" +
 				"'4' to display average total livable area for residences in a specified ZIP Code\n" +
 				"'5' to display total residential market value per capita for a specified ZIP Code\n" +
-				"'6' to display total market value of people with parking fines for a specified ZIP Code\n" +
+				"'6' to display total market value over number of parking fines for a specified ZIP Code\n" +
 				"'0' to exit.");
 		System.out.println("Your selection: ");
 
@@ -50,8 +50,8 @@ public class UserInterface {
 			int choice = in.nextInt();
 
 			// Log current time and user selection
-			l.log(System.currentTimeMillis());
-			l.log("User Selection:" + choice);
+			logger.log(System.currentTimeMillis());
+			logger.log("User Selection:" + choice);
 
 			if (choice == 0) {
 				break;
@@ -78,7 +78,7 @@ public class UserInterface {
 			}
 			
 			else if (choice == 6) {
-				doTotalMarketValueOfPeopleWithFines(); 
+				doTotalMarketValuePerFineByZipCode(); 
 			}
 			else {
 				throw new IllegalArgumentException("Invalid input! Input must be an integer 1-6, or 0 to exit program.");
@@ -233,7 +233,7 @@ public class UserInterface {
 	/**
 	 * Task 6
 	 */
-	protected void doTotalMarketValueOfPeopleWithFines() {
+	protected void doTotalMarketValuePerFineByZipCode() {
 
 		String zipCode = promptUserForZipCode();
 		HashMap<String,Double> resultsMap = new HashMap<>();
