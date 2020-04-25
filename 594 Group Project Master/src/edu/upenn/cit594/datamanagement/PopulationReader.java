@@ -2,10 +2,12 @@ package edu.upenn.cit594.datamanagement;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 
+import edu.upenn.cit594.data.Property;
 import edu.upenn.cit594.logging.Logger;
 
 /**
@@ -16,16 +18,17 @@ import edu.upenn.cit594.logging.Logger;
 public class PopulationReader {
 	
 	protected String filename;
-	protected HashMap<String,Integer> populations = new HashMap<String,Integer>();
-	
+	protected Map<String,Integer> populations = new HashMap<String,Integer>();
+	protected Set<String> zipCodes = new HashSet<String>();
 	
 	public PopulationReader(String name) {
 		filename = name;
 		populations = getPopulations();
+		
 
 	}
 	
-	public HashMap<String, Integer> getPopulations() {
+	public Map<String, Integer> getPopulations() {
 		
 		Logger logger = Logger.getInstance();
 		
@@ -61,8 +64,14 @@ public class PopulationReader {
 		}
 	}
 	
-	public Set<String> getZipCodes(){
-		return populations.keySet();
+	public Set<String> getZipCodes() {
+		// If set of ZIP Code was not yet generated
+		if (zipCodes.isEmpty()) {
+			for (String zipCode : populations.keySet()) {
+				zipCodes.add(zipCode);
+			}
+		}
+		return zipCodes;
 	}
 	
 }

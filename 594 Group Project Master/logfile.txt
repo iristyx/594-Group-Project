@@ -1,5 +1,25 @@
-1587795237560 csv parking.csv properties.csv population.txt logfile.txt
-1587795237576
+1587799212415 csv parking.csv properties.csv population.txt logfile.txt
+1587799212426
 parking.csv
-1587795237874
+1587799212721
 properties.csv
+1587799298252
+population.txt
+1587799324339
+User Selection:2
+1587799337627
+User Selection:3
+1587799339403
+19104
+1587799342274
+User Selection:4
+1587799344386
+19104
+1587799345251
+User Selection:5
+1587799346867
+19104
+1587799348763
+User Selection:6
+1587799350043
+19104

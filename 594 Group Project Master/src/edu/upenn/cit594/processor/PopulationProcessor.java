@@ -1,5 +1,6 @@
 package edu.upenn.cit594.processor;
-import java.util.HashMap;
+import java.util.Map;
+
 import edu.upenn.cit594.datamanagement.PopulationReader;
 
 /*
@@ -8,7 +9,7 @@ import edu.upenn.cit594.datamanagement.PopulationReader;
 public class PopulationProcessor {
 
 	protected PopulationReader populationReader;
-	protected HashMap<String,Integer> populations;
+	protected Map<String,Integer> populations;
 	
 	public PopulationProcessor(PopulationReader populationReader) {
 		this.populationReader = populationReader;
@@ -18,9 +19,9 @@ public class PopulationProcessor {
 	/*
 	 * Returns the total sum of population for all ZIP Codes
 	 */
-	public Integer getTotalPopulation() {
+	public int getTotalPopulation() {
 
-		Integer sum = 0;
+		int sum = 0;
 		for (String zipCode : populations.keySet()) {
 			sum += populations.get(zipCode);
 		}

@@ -116,7 +116,7 @@ public class UserInterface {
 		
 		// If computation was not performed before
 		if (!Results.containsKey("2")) {
-			HashMap<String,Double> totalParkingFinesPerCapita = parkingProcessor.getTotalFinesPerCapitaForAllPAZipCodes();
+			Map<String,Double> totalParkingFinesPerCapita = parkingProcessor.getTotalFinesPerCapitaForZipCodesInState("pa");
 			Map<String,Double> sortedTotalParkingFinesPerCapita = new TreeMap<String,Double>(totalParkingFinesPerCapita);
 			Results.put("2", new Result<Map<String,Double>>(sortedTotalParkingFinesPerCapita));
 		}

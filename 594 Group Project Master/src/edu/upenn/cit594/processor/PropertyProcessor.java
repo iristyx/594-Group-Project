@@ -3,6 +3,7 @@ package edu.upenn.cit594.processor;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import edu.upenn.cit594.data.Property;
 import edu.upenn.cit594.datamanagement.PopulationReader;
@@ -13,7 +14,7 @@ public class PropertyProcessor {
 	protected PropertyReader propertyReader;
 	protected PopulationReader populationReader;
 	protected List<Property> properties;
-	protected HashMap<String, Integer> populations;
+	protected Map<String, Integer> populations;
 	protected Set<String> propertyZipCodes;
 	protected Set<String> populationZipCodes;
 	protected Set<String> validZipCodes = new HashSet<String>();
