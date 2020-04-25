@@ -50,7 +50,7 @@ public class UserInterface {
 
 			// Log current time and user selection
 			logger.log(System.currentTimeMillis());
-			logger.log("User Selection:" + choice);
+			logger.log(choice);
 
 			if (choice.equals("0")) {
 				break;
@@ -291,16 +291,17 @@ public class UserInterface {
 	}
 
 	private String promptUserForZipCode() {
-		Logger l = Logger.getInstance();
+		Logger logger = Logger.getInstance();
 		System.out.print("Please input a 5-digit ZIP Code: ");
 		String zipCode = in.next();
+		
+		// Log current time and user's ZIP Code input
+		logger.log(System.currentTimeMillis());
+		logger.log(zipCode);
+		
 		if (zipCode.length() != 5) {
 			return "0";
 		}
-
-		// Log current time and user's ZIP Code input
-		l.log(System.currentTimeMillis());
-		l.log(zipCode);
 
 		return zipCode;
 	}
