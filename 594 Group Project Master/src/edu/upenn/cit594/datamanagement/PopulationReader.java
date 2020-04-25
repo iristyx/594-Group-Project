@@ -1,4 +1,5 @@
 package edu.upenn.cit594.datamanagement;
+
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.HashMap;
@@ -16,38 +17,37 @@ import edu.upenn.cit594.logging.Logger;
  */
 
 public class PopulationReader {
-	
+
 	protected String filename;
-	protected Map<String,Integer> populations = new HashMap<String,Integer>();
+	protected Map<String, Integer> populations = new HashMap<String, Integer>();
 	protected Set<String> zipCodes = new HashSet<String>();
-	
+
 	public PopulationReader(String name) {
 		filename = name;
 		populations = getPopulations();
-		
 
 	}
-	
+
 	public Map<String, Integer> getPopulations() {
-		
+
 		Logger logger = Logger.getInstance();
-		
+
 		if (!populations.isEmpty()) {
 			return populations;
 		} else {
-			
+
 			Scanner in;
 			try {
 				in = new Scanner(new FileReader(filename));
-				
+
 				// Log current time and name of file that is opened
 				logger.log(System.currentTimeMillis());
 				logger.log(filename);
-				
+
 				while (in.hasNext()) {
 					String population = in.nextLine();
 					String[] populationDetails = population.split(" ");
-					if(populationDetails.length == 2) {
+					if (populationDetails.length == 2) {
 						String zipCode = populationDetails[0];
 						String populationNum = populationDetails[1];
 						populations.put(zipCode, Integer.parseInt(populationNum));
@@ -63,7 +63,7 @@ public class PopulationReader {
 			return null;
 		}
 	}
-	
+
 	public Set<String> getZipCodes() {
 		// If set of ZIP Code was not yet generated
 		if (zipCodes.isEmpty()) {
@@ -73,5 +73,5 @@ public class PopulationReader {
 		}
 		return zipCodes;
 	}
-	
+
 }

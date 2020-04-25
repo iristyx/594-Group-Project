@@ -1,16 +1,12 @@
 package edu.upenn.cit594.datamanagement;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import edu.upenn.cit594.data.Property;
 import edu.upenn.cit594.logging.Logger;
 
@@ -43,7 +39,7 @@ public class PropertyReader {
 			try {
 				BufferedReader br = new BufferedReader(new FileReader(filename));
 				String line = null;
-				
+
 				// Log current time and name of file that is opened
 				logger.log(System.currentTimeMillis());
 				logger.log(filename);
@@ -76,14 +72,15 @@ public class PropertyReader {
 					// Read data
 					String marketValue = propertyDetails[marketValueIndex];
 					String livableArea = propertyDetails[livableAreaIndex];
-					String zipCode = propertyDetails[zipCodeIndex];	
+					String zipCode = propertyDetails[zipCodeIndex];
 					String fiveDigitsZipCode = getValidFiveDigitsZipCode(zipCode);
 
-					
-					// Check if marketValue and livableArea contain parsable values, and that zipCode has valid five digits ZIP Code
+					// Check if marketValue and livableArea contain parsable values, and that
+					// zipCode has valid five digits ZIP Code
 					if ((!marketValue.isEmpty()) && (!livableArea.isEmpty()) && (fiveDigitsZipCode != null)) {
 						try {
-							properties.add(new Property(Double.parseDouble(marketValue), Double.parseDouble(livableArea), fiveDigitsZipCode));
+							properties.add(new Property(Double.parseDouble(marketValue),
+									Double.parseDouble(livableArea), fiveDigitsZipCode));
 						} catch (Exception e) {
 						}
 					}
@@ -102,6 +99,9 @@ public class PropertyReader {
 		}
 	}
 
+	/*
+	 * Return list of ZIP Codes in the input properties file
+	 */
 	public Set<String> getZipCodes() {
 
 		// If set of ZIP Code was not yet generated
@@ -113,13 +113,21 @@ public class PropertyReader {
 		return zipCodes;
 	}
 
+	/*
+	 * Private helper method to return five digit ZIP Code, if ZIP Code is valid If
+	 * invalid ZIP Code, return null
+	 */
 	private String getValidFiveDigitsZipCode(String zipCode) {
 		if (hasValidFiveDigitsZipCode(zipCode)) {
 			return zipCode.substring(0, 5);
-		} 
+		}
 		return null;
 	}
 
+	/*
+	 * Private helper method to check if a string contains a valid five digits ZIP
+	 * Code
+	 */
 	private boolean hasValidFiveDigitsZipCode(String zipCode) {
 
 		try {
@@ -127,10 +135,9 @@ public class PropertyReader {
 			if (d > 9999 && d < 100000) {
 				return true;
 			}
+		} catch (Exception e) {
 		}
-		catch (Exception e) {}
 		return false;
 	}
-	
 
 }

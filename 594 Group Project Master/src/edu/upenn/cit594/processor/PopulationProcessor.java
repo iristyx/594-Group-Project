@@ -1,4 +1,5 @@
 package edu.upenn.cit594.processor;
+
 import java.util.Map;
 
 import edu.upenn.cit594.datamanagement.PopulationReader;
@@ -9,8 +10,8 @@ import edu.upenn.cit594.datamanagement.PopulationReader;
 public class PopulationProcessor {
 
 	protected PopulationReader populationReader;
-	protected Map<String,Integer> populations;
-	
+	protected Map<String, Integer> populations;
+
 	public PopulationProcessor(PopulationReader populationReader) {
 		this.populationReader = populationReader;
 		this.populations = populationReader.getPopulations();
@@ -27,5 +28,5 @@ public class PopulationProcessor {
 		}
 		return sum;
 	}
-	
+
 }

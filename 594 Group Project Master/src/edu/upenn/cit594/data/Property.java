@@ -5,7 +5,7 @@ public class Property {
 	double marketValue;
 	double livableArea;
 	String zipCode;
-	
+
 	public Property(double marketValue, double livableArea, String zipCode) {
 		this.marketValue = marketValue;
 		this.livableArea = livableArea;
@@ -23,6 +23,5 @@ public class Property {
 	public String getZipCode() {
 		return zipCode;
 	}
-	
 
 }

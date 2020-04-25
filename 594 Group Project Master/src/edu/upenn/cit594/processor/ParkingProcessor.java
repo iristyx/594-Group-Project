@@ -26,7 +26,6 @@ public class ParkingProcessor {
 		this.parkingViolations = parkingReader.getParkingViolations();
 		this.populationZipCodes = populationReader.getZipCodes();
 
-
 	}
 
 	/*
@@ -36,9 +35,9 @@ public class ParkingProcessor {
 	public Map<String, Double> getTotalFinesPerCapitaForZipCodesInState(String stateAbbreviation) {
 		Map<String, Double> finesZipCodeMap = new HashMap<String, Double>();
 		Set<String> zipCodes = getStateZipCodes(stateAbbreviation);
-	
+
 		for (String zipCode : zipCodes) {
-			
+
 			// Check if there is population data for this ZIP Code
 			if (populationZipCodes.contains(zipCode)) {
 				int population = populations.get(zipCode);
@@ -63,19 +62,18 @@ public class ParkingProcessor {
 		int fineCount = 0;
 		for (ParkingViolation parking : parkingViolations) {
 			if (parking.getZipCode().equals(zipCode) && parking.getState().equalsIgnoreCase("pa")) {
-				fineCount ++;
+				fineCount++;
 			}
 		}
 
 		return fineCount;
 	}
-	
-	
+
 	/*
-	 * Return a list of unique ZIP codes based on input stateAbbreviation, with available information on
-	 * population size
+	 * Return a list of unique ZIP codes based on input stateAbbreviation, with
+	 * available information on population size
 	 */
-	private Set<String> getStateZipCodes(String stateAbbreviation) {
+	public Set<String> getStateZipCodes(String stateAbbreviation) {
 
 		// If ZIP Codes had not been generated for the input stateAbbreviation
 		if (!zipCodesByState.containsKey(stateAbbreviation)) {
@@ -83,17 +81,17 @@ public class ParkingProcessor {
 			for (ParkingViolation parking : parkingViolations) {
 				if (parking.getState().equalsIgnoreCase(stateAbbreviation)) {
 					zipCodesInState.add(parking.getZipCode());
-				}	
+				}
 			}
-			zipCodesByState.put(stateAbbreviation,zipCodesInState);
-		} 
-		
+			zipCodesByState.put(stateAbbreviation, zipCodesInState);
+		}
+
 		return zipCodesByState.get(stateAbbreviation);
 	}
 
 	/*
-	 * Private helper method: return sum of total fines in a given ZIP Code
-	 * Return 0 of input ZIP Code is not invalid 
+	 * Private helper method: return sum of total fines in a given ZIP Code Return 0
+	 * of input ZIP Code is not invalid
 	 */
 	private double getTotalFinesByZipCode(String zipCode) {
 		double totalFines = 0;
@@ -104,5 +102,5 @@ public class ParkingProcessor {
 		}
 		return totalFines;
 	}
-	
+
 }

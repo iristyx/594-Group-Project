@@ -14,7 +14,7 @@ public class Logger {
 
 	private Logger(String filename) {
 		File logFile = new File(filename);
-		
+
 		// Check if log file already exists. If not, create the file
 		if (!logFile.exists()) {
 			try {
@@ -32,19 +32,28 @@ public class Logger {
 
 	private static Logger instance = new Logger(logFileName);
 
+	/*
+	 * Return instance of logger
+	 */
 	public static Logger getInstance() {
 		return instance;
 	}
 
+	/*
+	 * Write a string in log file
+	 */
 	public void log(String msg) {
 		out.println(msg);
 		out.flush();
 	}
 
+	/*
+	 * Write a long value in log file
+	 */
 	public void log(long currentTimeMillis) {
 		out.println(currentTimeMillis);
 		out.flush();
-		
+
 	}
 
 }

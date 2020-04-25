@@ -1,11 +1,10 @@
 package edu.upenn.cit594.datamanagement;
+
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Scanner;
 import edu.upenn.cit594.data.ParkingViolation;
 import edu.upenn.cit594.logging.Logger;
 
@@ -27,20 +26,20 @@ public class ParkingCSVReader implements ParkingReader {
 
 	@Override
 	public List<ParkingViolation> getParkingViolations() {
-		
+
 		Logger logger = Logger.getInstance();
-		
+
 		if (!parkingViolations.isEmpty()) {
 			return parkingViolations;
 		} else {
 			try {
 				BufferedReader br = new BufferedReader(new FileReader(filename));
 				String line = null;
-				
+
 				// Log current time and name of file that is opened
 				logger.log(System.currentTimeMillis());
 				logger.log(filename);
-				
+
 				while ((line = br.readLine()) != null) {
 					String[] parkingDetails = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
 
@@ -50,8 +49,9 @@ public class ParkingCSVReader implements ParkingReader {
 						String state = parkingDetails[4];
 						String zipCode = parkingDetails[6];
 
-						// Check for any missing data in the required fields - only create new ParkingViolation if all info are valid
-						if(!zipCode.isEmpty() && !state.isEmpty()) {
+						// Check for any missing data in the required fields - only create new
+						// ParkingViolation if all info are valid
+						if (!zipCode.isEmpty() && !state.isEmpty()) {
 							parkingViolations.add(new ParkingViolation(zipCode, Double.parseDouble(fine), state));
 						}
 					}
