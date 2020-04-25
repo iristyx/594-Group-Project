@@ -1,15 +1,5 @@
-1587799817695 csv parking.csv properties.csv population.txt logfile.txt
-1587799817703
+1587800747679 csv parking.csv properties.csv population.txt logfile.txt
+1587800747685
 parking.csv
-1587799818066
+1587800748074
 properties.csv
-1587799905178
-population.txt
-1587799925095
-User Selection:6
-1587799926526
-19104
-1587799941854
-User Selection:3
-1587799945182
-19104
